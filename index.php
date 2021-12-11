@@ -13,7 +13,7 @@
 <body>
 	<header>
         <nav>
-            <h1 class="logo">LiverPuri</h1>
+            <h1 class="logo">Fabricas de Tepito</h1>
             <input type="checkbox" id="hamburguer-toggle">
             <label for="hamburguer-toggle" class="hamburguer">
                 <span class="bar"></span>
@@ -67,7 +67,7 @@
 		<div class="home-grid">
             <div class="slide">
                 <div class="slogan">
-                    <h1>LIVERPURI es parte de mi vida!</h1>
+                    <h1>Fabricas de Tepito es parte de mi vida!</h1>
                     <button>Shop Now</button>
                 </div>
             </div>

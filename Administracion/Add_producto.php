@@ -31,6 +31,7 @@
                     if (isset($_SESSION['admin_on'])) {
                         ?>
                     <li><a href="index_admin.php">Admin</a></li>
+                    <li><a href="Estadisticas.php">Estadisticas</a></li>
                 <?php
                     } 
                 ?>

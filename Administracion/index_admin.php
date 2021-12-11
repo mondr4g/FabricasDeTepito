@@ -10,7 +10,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Liverpuri Official</title>
+	<title>Fabricas de Tepito Official</title>
     <link rel="stylesheet" type="text/css" href="../CSS/style.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" type="text/css" href="../CSS/resp.css?v=<?php echo time(); ?>">
     <script type="text/javascript">
@@ -35,7 +35,7 @@
 <body>
 	<header>
         <nav>
-            <a id="main-logo" href="../index.php"><h1 class="logo">LiverPuri</h1></a>
+            <a id="main-logo" href="../index.php"><h1 class="logo">Fabricas de Tepito</h1></a>
             <input type="checkbox" id="hamburguer-toggle">
             <label for="hamburguer-toggle" class="hamburguer">
                 <span class="bar"></span>
@@ -57,6 +57,7 @@
                     if (isset($_SESSION['admin_on'])) {      
                 ?>
                     <li><a href="chat_admin.php">Chat</a></li>
+                    <li><a href="Estadisticas.php">Estadisticas</a></li>
                 <?php
                     }
                 ?>

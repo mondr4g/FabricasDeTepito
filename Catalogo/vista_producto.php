@@ -29,6 +29,7 @@
                     if (isset($_SESSION['admin_on'])) {      
                 ?>
                     <li><a href="../Administracion/index_admin.php">Admin</a></li>
+                    <li><a href="../Administracion/Estadisticas.php">Estadisticas</a></li>
                 <?php
                     }
                 ?>
