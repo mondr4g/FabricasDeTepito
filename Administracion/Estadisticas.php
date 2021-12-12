@@ -106,7 +106,7 @@
                         $result = getSalesByGender();
                         while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
                     ?>
-                    '<?php echo $row["sexo"]; ?>',
+                    '<?php echo $row["SEXO"]; ?>',
                     <?php
                         }
                     ?>
@@ -118,7 +118,7 @@
                             $result = getSalesByGender();
                             while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
                         ?>
-                        '<?php echo $row["cantidad"]; ?>',
+                        '<?php echo $row["CANTIDAD"]; ?>',
                         <?php
                             }
                         ?>
@@ -147,7 +147,7 @@
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
                 responsive: true,
                 plugins: {
                     legend: {
@@ -166,10 +166,28 @@
         const comprasTalla = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: [
+                    <?php
+                        $result = getSalesBySize();
+                        while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                    ?>
+                    '<?php echo $row["TALLA"]; ?>',
+                    <?php
+                        }
+                    ?>
+                ],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '# De Compras',
+                    data: [
+                        <?php
+                            $result = getSalesBySize();
+                            while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                        ?>
+                        '<?php echo $row["CANTIDAD"]; ?>',
+                        <?php
+                            }
+                        ?>
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -216,10 +234,28 @@
         const comprasCategoria = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: [
+                    <?php
+                        $result = getSalesByCategory();
+                        while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                    ?>
+                    '<?php echo $row["NOMBRE"]; ?>',
+                    <?php
+                        }
+                    ?>
+                ],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '# de Compras',
+                    data: [
+                        <?php
+                            $result = getSalesByCategory();
+                            while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                        ?>
+                        '<?php echo $row["CANTIDAD"]; ?>',
+                        <?php
+                            }
+                        ?>
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -258,10 +294,28 @@
         const procustoVendido = new Chart(ctx, {
             type: 'polarArea',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: [
+                    <?php
+                        $result = getBestProducts();
+                        while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                    ?>
+                    '<?php echo $row["NOMBRE"]; ?>',
+                    <?php
+                        }
+                    ?>
+                ],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '# De Compras',
+                    data: [
+                        <?php
+                            $result = getBestProducts();
+                            while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                        ?>
+                        '<?php echo $row["CANTIDAD"]; ?>',
+                        <?php
+                            }
+                        ?>
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -300,10 +354,28 @@
         const productoVendidoReb = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: [
+                    <?php
+                        $result = getBestProductsByOffer();
+                        while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                    ?>
+                    '<?php echo $row["NOMBRE"]; ?>',
+                    <?php
+                        }
+                    ?>
+                ],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '# De Compras',
+                    data: [
+                        <?php
+                            $result = getBestProductsByOffer();
+                            while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                        ?>
+                        '<?php echo $row["CANTIDAD"]; ?>',
+                        <?php
+                            }
+                        ?>
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -342,10 +414,28 @@
         const productoVendidoNew = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: [
+                    <?php
+                        $result = getBestProductsByLaunch();
+                        while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                    ?>
+                    '<?php echo $row["NOMBRE"]; ?>',
+                    <?php
+                        }
+                    ?>
+                ],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '# De Compras',
+                    data: [
+                        <?php
+                            $result = getBestProductsByLaunch();
+                            while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                        ?>
+                        '<?php echo $row["CANTIDAD"]; ?>',
+                        <?php
+                            }
+                        ?>
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
