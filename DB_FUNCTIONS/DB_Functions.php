@@ -17,30 +17,40 @@
     //funcion que regresa total de compras realizadas por genero
     function getSalesBySize() {
         $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_compras_talla");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
         return $stid;
     }
 
     //funcion que regresa total de compras realizadas por genero
     function getSalesByCategory() {
         $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_compras_categoria");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
         return $stid;
     }
 
     //funcion que regresa total de compras realizadas por genero
     function getBestProducts() {
         $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_productos_vendidos");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
          return $stid;
     }
 
     //funcion que regresa total de compras realizadas por genero
     function getBestProductsByOffer() {
         $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_productos_vendidos_reb");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
         return $stid;
     }
 
     //funcion que regresa total de compras realizadas por genero
     function getBestProductsByLaunch() {
         $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_productos_vendidos_new");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
         return $stid;
     }
 
