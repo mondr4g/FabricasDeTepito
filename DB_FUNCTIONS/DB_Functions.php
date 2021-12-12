@@ -39,7 +39,7 @@
     }
 
     //funcion que regresa total de compras realizadas por genero
-    function getSalesByLaunch() {
+    function getBestProductsByLaunch() {
         $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_productos_vendidos_new");
         return $stid;
     }
