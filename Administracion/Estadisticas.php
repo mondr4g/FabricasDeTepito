@@ -1,5 +1,7 @@
 <?php
-   include 'crud_admin.php';
+    session_start();
+
+    include '../DB_FUNCTIONS/DB_functions.php';
 
     if(isset($_SESSION['admin_on'])){
         //ENSEGUIDA METERLE ESTILOS PARA QUE SE VEA BONITO.
@@ -13,24 +15,6 @@
 	<title>Fabricas de Tepito Official</title>
     <link rel="stylesheet" type="text/css" href="../CSS/style.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" type="text/css" href="../CSS/resp.css?v=<?php echo time(); ?>">
-    <script type="text/javascript">
-        window.onload = function() {
-            checkView();
-        }
-
-        function checkView() {
-            var result = document.getElementsByClassName("switch-input")[0].checked ? 'yes' : 'no';
-            console.log(result);
-            if(result == 'yes') {
-                document.getElementById('uID').style.display = "inline-flex";
-                document.getElementById('pID').style.display = "none";
-            }
-            else {
-                document.getElementById('uID').style.display = "none";
-                document.getElementById('pID').style.display = "inline-flex";                
-            }
-        }
-    </script>
 </head>
 <body>
 	<header>
@@ -117,10 +101,28 @@
         const comprasGenero = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: [
+                    <?php
+                        $result = getSalesByGender();
+                        while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                    ?>
+                    '<?php echo $row["sexo"]; ?>',
+                    <?php
+                        }
+                    ?>
+                ],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '# de Compras',
+                    data: [
+                        <?php
+                            $result = getSalesByGender();
+                            while(($row = oci_fetch_array($result, OCI_ASSOC)) != false) {
+                        ?>
+                        '<?php echo $row["cantidad"]; ?>',
+                        <?php
+                            }
+                        ?>
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -141,6 +143,11 @@
                 }]
             },
             options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
                 responsive: true,
                 plugins: {
                     legend: {

@@ -4,6 +4,47 @@
     $GLOBALS['conne']=$conne;
 
     //*********************** 
+    //Funciones para estadisticas
+    //***********************
+    //funcion que regresa total de compras realizadas por genero
+    function getSalesByGender() {
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_compras_genero");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
+        return $stid;
+    }
+
+    //funcion que regresa total de compras realizadas por genero
+    function getSalesBySize() {
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_compras_talla");
+        return $stid;
+    }
+
+    //funcion que regresa total de compras realizadas por genero
+    function getSalesByCategory() {
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_compras_categoria");
+        return $stid;
+    }
+
+    //funcion que regresa total de compras realizadas por genero
+    function getBestProducts() {
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_productos_vendidos");
+         return $stid;
+    }
+
+    //funcion que regresa total de compras realizadas por genero
+    function getBestProductsByOffer() {
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_productos_vendidos_reb");
+        return $stid;
+    }
+
+    //funcion que regresa total de compras realizadas por genero
+    function getSalesByLaunch() {
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ver_productos_vendidos_new");
+        return $stid;
+    }
+
+    //*********************** 
     //Funciones para el login
     //***********************
     //SELECT * FROM `producto` NATURAL JOIN `descripcion_producto` WHERE descripcion_producto.talla='xs'

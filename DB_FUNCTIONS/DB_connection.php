@@ -8,8 +8,10 @@
         die("Error: conexion incorrecta".mysqli_connect_error());
     }*/
 
-    $Oracle = oci_connect("system","admin","localhost/XE");
-    if($Oracle){
-        echo 'si';
+    $conne = oci_connect("MONDRAG","1234","localhost/XE");
+
+    if (!$conne) {
+        $e = oci_error();
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
     }
 ?> 
