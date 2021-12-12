@@ -155,7 +155,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Pie Chart'
+                        text: 'Compras Por Genero'
                     }
                 }
             },
@@ -223,7 +223,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Horizontal Bar Chart'
+                        text: 'Compras Por Talla'
                     }
                 }
             },
@@ -283,7 +283,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart'
+                        text: 'Compras por Categoria'
                     }
                 }
             },
@@ -343,7 +343,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart'
+                        text: 'Productos Mas Vendidos'
                     }
                 }
             },
@@ -403,7 +403,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart'
+                        text: 'Productos Mas Vendidos Por Rebajas'
                     }
                 }
             },
@@ -463,7 +463,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart'
+                        text: 'Productos Mas Vendidos Por Lanzamiento'
                     }
                 }
             },

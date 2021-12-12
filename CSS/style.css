@@ -643,6 +643,10 @@ footer p {
 	padding: 15px;
 }
 
+.home-graphics {
+    background-color: #161a1d;
+}
+
 .graphs {
     width: 80%;
     display: flex;
