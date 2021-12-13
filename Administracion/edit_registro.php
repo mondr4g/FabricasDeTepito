@@ -18,10 +18,10 @@
                     
                         $password=null;
                         if ($_POST['txtpasswd']=="") {
-                            $password=obtain_pass($_POST['id_us'])['passw'];
+                            $password=obtain_pass($_POST['id_us'])['PASS'];
                             //echo "No hay contra";
-                        } elseif (obtain_pass($_POST['id_us'])['passw']==sha1($_POST['txtpasswd'])) {
-                            $password=obtain_pass($_POST['id_us'])['passw'];
+                        } elseif (obtain_pass($_POST['id_us'])['PASS']==sha1($_POST['txtpasswd'])) {
+                            $password=obtain_pass($_POST['id_us'])['PASS'];
                             //echo "es la misma";
                         } else {
                             $password=sha1($_POST['txtpasswd']);
@@ -30,6 +30,7 @@
                         
                         $user_data=array(
                             "id"=>$_POST['id_us'],
+                            "id_dir"=>$_POST['id_dir'],
                             "username" => $_POST['txtusr'],
                             "password" => $password,
                             "nom_1" => $_POST['nom1'],
@@ -58,9 +59,9 @@
                             }
                         } elseif ($_POST['imp']=="c") {
                             echo "llego cliente";
-                            $user_data+=['Id_cliente' => $_POST['id_us']];
-                            $user_data+=['gustos' => $_POST['gustos']];
-                            $user_data+=['genero' => $_POST['genero']];
+                            $user_data+=['COD_CLIENTE' => $_POST['id_us']];
+                            //$user_data+=['gustos' => $_POST['gustos']];
+                            $user_data+=['SEXO' => $_POST['genero']];
                             //print_r($user_data);
 
                             if (modify_cliente($user_data)) {
@@ -354,6 +355,7 @@
                         <input type="hidden" name="tipoo" value="u">
                         <input type="hidden" name="imp" value="<?php echo $_GET['imp']?>">
                         <input type="hidden" name="id_us" value="<?php echo $usuario['ID_PERSONA']?>">
+                        <input type="hidden" name="id_dir" value="<?php echo $usuario['ID_DIRECCION']?>">
                         <button type="submit" name="btnAction" class="sign-in" id="new-user" value="Guardar"> Guardar </button>
                     </form>
     <!-- FORM DE USUARIO/ADMIN-->
