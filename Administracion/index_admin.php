@@ -90,11 +90,11 @@
                         $usera=get_admin($_SESSION['admin_on']);
                         
                     ?>
-                        <h3><?php echo $usera['username'] ;?></h3>
+                        <h3><?php echo $usera['USERNAME'] ;?></h3>
                         <br><br>
-                        <p><?php echo $usera['p_nombre']." ".$usera['ape_pat'] ?></p>
-                        <p><?php echo $usera['email']?></p>
-                        <p><?php echo $usera['telefono']?></p>
+                        <p><?php echo $usera['P_NOMBRE']." ".$usera['APE_PAT'] ?></p>
+                        <p><?php echo $usera['EMAIL']?></p>
+                        <p><?php echo $usera['TELEFONO']?></p>
                     </div>
                     <div class="toggle-switch">
                         <label class="switch">
@@ -105,7 +105,7 @@
                     </div>
                     <div class="btn-A">
                     <form action="" method="post">
-                        <button type="submit" name="btnAction" value="Add_us"  >Add Usuario</button><!--Falta este boton xd-->
+                        <button type="submit" name="btnAction" value="Add_us"  >Add PERSONA</button><!--Falta este boton xd-->
                         <button type="submit" name="btnAction" value="Add_prod"  >Add Producto</button><!--Falta este boton xd-->
                         <button type="submit" name="btnAction" value="Add_ofer"  >Add Oferta</button><!--Falta este boton xd-->
                         </form>
@@ -115,20 +115,20 @@
             <div class="products2" id="pID">
                 <?php
                     $productos=select_all_products();
-                    foreach ($productos as $prod) {
+                    while(($prod = oci_fetch_array($productos, OCI_ASSOC)) != false) {
                         # code...
-                        $imgs=json_decode($prod['imgs']);
+                        $imgs = $prod['RUTA'];
                 ?> 
                     <div class="item-box">
                         <form action="" method="POST">
                             <div class="img-item">
-                                <img class="imgi" src="<?php echo $imgs->I1?>" alt="item1"> 
+                                <img class="imgi" src="<?php echo $imgs?>" alt="item1"> 
                             </div><!--El boton de añadir cada producto al carrito, metelo dentro de un formulario-->
                             <div class="description">
-                                <h4 name="nombre"><?php echo $prod['nombre']?></h4>
-                                <p name="precio">$<?php echo $prod['precio']?></p>
+                                <h4 name="nombre"><?php echo $prod['NOMBRE']?></h4>
+                                <p name="precio">$<?php echo $prod['PRECIO']?></p>
                                 <div class="info-item">
-                                    <input type="hidden" name="id_prod" value="<?php echo $prod['ID_producto'] ?>">
+                                    <input type="hidden" name="id_prod" value="<?php echo $prod['ID_PRODUCTO'] ?>">
                                 </div>
                                 <div>
                                     
@@ -142,16 +142,16 @@
                     }
                 ?>
             </div>
-            <div class="usuarios" id="uID">
+            <div class="PERSONAs" id="uID">
                 <?php
                     $clientes=select_all_clients();
                     $admins=select_all_admins();
-                    foreach ($clientes as $us) {
+                    while(($us = oci_fetch_array($clientes, OCI_ASSOC)) != false) {
                         # code...
                         $img=null;
-                        if($us['genero']=="hombre"){
+                        if($us['SEXO']=="H"){
                             $img="../img/hombre.png";//Aqui mete el link de hombre
-                        }elseif($us['genero']=="mujer"){
+                        }elseif($us['SEXO']=="M"){
                             $img="../img/mujer.png" ;//imagen de mujer
                         }
                 ?> 
@@ -161,10 +161,10 @@
                                 <img class="imgi" src="<?php echo $img; ?>" alt="item1">
                             </div><!--El boton de añadir cada producto al carrito, metelo dentro de un formulario-->
                             <div class="description">
-                                <h4 name="nombre"><?php echo $us['username']?></h4>
-                                <p name="ID">ID<?php echo $us['Id_usuario']?></p>
+                                <h4 name="nombre"><?php echo $us['USERNAME']?></h4>
+                                <p name="ID">ID<?php echo $us['ID_PERSONA']?></p>
                                 <div>
-                                    <input type="hidden" name="id_us" value="<?php echo $us['Id_usuario']?>">
+                                    <input type="hidden" name="id_us" value="<?php echo $us['ID_PERSONA']?>">
                                     <input type="hidden" name="tipo" value="cl">
                                     <button class="update" name="btnActionUs" value="Actualizar">Editar</button>
                                     <button class="update" name="btnActionUs" value="Eliminar">Borrar</button>
@@ -174,10 +174,10 @@
                     </div>
                 <?php
                     }
-                    foreach ($admins as $us) {
+                    while(($us = oci_fetch_array($admins, OCI_ASSOC)) != false) {
                         # code...
                         $img="../img/admin.png";//Aqui pon la imagen
-                        if ($us['Id_usuario']!=$_SESSION['admin_on']) {
+                        if ($us['ID_PERSONA']!=$_SESSION['admin_on']) {
                             ?>
                     <div class="item-box">
                         <form action="">
@@ -185,10 +185,10 @@
                                 <img class="imgi" src="<?php echo $img; ?>" alt="item1">
                             </div><!--El boton de añadir cada producto al carrito, metelo dentro de un formulario-->
                             <div class="description">
-                                <h4 name="nombre"><?php echo $us['username']?></h4>
-                                <p name="ID">ID<?php echo $us['Id_usuario']?></p>
+                                <h4 name="nombre"><?php echo $us['USERNAME']?></h4>
+                                <p name="ID">ID<?php echo $us['ID_PERSONA']?></p>
                                 <div>
-                                    <input type="hidden" name="id_us" value="<?php echo $us['Id_usuario']?>">
+                                    <input type="hidden" name="id_us" value="<?php echo $us['ID_PERSONA']?>">
                                     <input type="hidden" name="tipo" value="ad">
                                     <button class="update" name="btnActionUs" value="Actualizar">Editar</button>
                                     <button class="update" name="btnActionUs" value="Eliminar">Borrar</button>

@@ -83,18 +83,18 @@
                         $usera=get_admin($_SESSION['admin_on']);
                         
                     ?>
-                        <h3><?php echo $usera['username'] ;?></h3>
+                        <h3><?php echo $usera['USERNAME'] ;?></h3>
                         <br><br>
-                        <p><?php echo $usera['p_nombre']." ".$usera['ape_pat'] ?></p>
-                        <p><?php echo $usera['email']?></p>
-                        <p><?php echo $usera['telefono']?></p>
+                        <p><?php echo $usera['P_NOMBRE']." ".$usera['APE_PAT'] ?></p>
+                        <p><?php echo $usera['EMAIL']?></p>
+                        <p><?php echo $usera['TELEFONO']?></p>
                     </div>
             </div>
             <div class="usuarios" id="uID">
                 <?php
                
                     $clientes=chats_disponibles();
-                    foreach ($clientes as $us) {
+                    while(($us = oci_fetch_array($clientes, OCI_ASSOC)) != false) {
                         # code...
                 ?> 
                     <div class="item-box">
@@ -103,10 +103,10 @@
                                 <img class="imgi" src="../img/chat.png" alt="item1">
                             </div><!--El boton de añadir cada producto al carrito, metelo dentro de un formulario-->
                             <div class="description">
-                                <h4 name="nombre"><?php echo $us['username']?></h4>
-                                <p name="ID">ID<?php echo $us['Id_usuario']?></p>
+                                <h4 name="nombre"><?php echo $us['USERNAME']?></h4>
+                                <p name="ID">ID<?php echo $us['ID_PERSONA']?></p>
                                 <div>
-                                    <input type="hidden" name="id_us" value="<?php echo $us['Id_usuario']?>">
+                                    <input type="hidden" name="id_us" value="<?php echo $us['ID_PERSONA']?>">
                                     <input type="hidden" name="tipo" value="cl">
                                     <button class="update" name="btnActionUs" value="Responder">Responder</button>
                                     <button class="update" name="btnActionUs" value="Eliminar">Borrar</button>

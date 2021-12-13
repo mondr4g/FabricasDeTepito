@@ -24,9 +24,9 @@
             </label>
             <ul class="nav-list">
                 <li><a href="catalogo.php?nuevos=true">Nuevos Lanzamientos</a></li>
-                <li><a href="catalogo.php?categoria=hombre">Hombre</a></li>
-                <li><a href="catalogo.php?categoria=mujer">Mujer</a></li>
-                <li><a href="catalogo.php?categoria=ninos">Niño/a</a></li>
+                <li><a href="catalogo.php?categoria=Hombre">Hombre</a></li>
+                <li><a href="catalogo.php?categoria=Mujer">Mujer</a></li>
+                <li><a href="catalogo.php?categoria=Ninos">Niño/a</a></li>
                 <li><a href="catalogo.php?rebajas=true">Rebajas</a></li>
                 <?php
                     if (isset($_SESSION['admin_on'])) {      
@@ -142,21 +142,21 @@
                     }
 
                     if ($productos) {
-                        foreach ($productos as $prod) {
+                        while(($prod = oci_fetch_array($productos, OCI_ASSOC)) != false) {
                             # code...
-                            $imgs=json_decode($prod['imgs']); ?> 
+                            $imgs=$prod['RUTA']; ?> 
                             <div class="item-box">
                                 <form action="" method="POST">
                                     <div class="img-item">
-                                        <a href="vista_producto.php?id_del_prod=<?php echo $prod['ID_producto'] ?>"><img class="imgi" src="<?php echo $imgs->I1 ?>" alt="item1"></a> 
+                                        <a href="vista_producto.php?id_del_prod=<?php echo $prod['ID_PRODUCTO'] ?>"><img class="imgi" src="<?php echo $imgs ?>" alt="item1"></a> 
                                     </div>
                                     <div class="description">
-                                        <h4 name="nombre"><?php echo $prod['nombre']?></h4>
-                                        <p name="precio"><?php echo $prod['precio']?> $MXN</p>
+                                        <h4 name="nombre"><?php echo $prod['NOMBRE']?></h4>
+                                        <p name="precio"><?php echo $prod['PRECIO']?> $MXN</p>
                                         <div class="info-item">
-                                            <input type="hidden" name="nombre" value="<?php echo $prod['nombre']?>">
-                                            <input type="hidden" name="precio" value="<?php echo $prod['precio']?>">
-                                            <input type="hidden" name="ID" value="<?php echo $prod['ID_producto'] ?>">
+                                            <input type="hidden" name="nombre" value="<?php echo $prod['NOMBRE']?>">
+                                            <input type="hidden" name="precio" value="<?php echo $prod['PRECIO']?>">
+                                            <input type="hidden" name="ID" value="<?php echo $prod['COD_PRODUCTO'] ?>">
                                             <input type="hidden" name="CANT" value="1">
                                             <input type="hidden" name="talla" value="M">
                                         </div>
@@ -169,6 +169,7 @@
                 <?php
                         }
                     }else{
+                        echo("No llega nada");
                 ?>
                     <!--Aqui ponle un msj bien vrgas de que no hay-->
                 <?php

@@ -194,7 +194,7 @@
                         <h1> Editar Usuario </h1>
                         <div class="input-group">
                             <label> Usuario </label>
-                            <input type="text" name="txtusr" autocomplete="off" value="<?php echo $usuario['username'] ?>" required >
+                            <input type="text" name="txtusr" autocomplete="off" value="<?php echo $usuario['USERNAME'] ?>" required >
                         </div>
                         <div class="input2">
                             <div class="input-group">
@@ -209,42 +209,42 @@
                         <div class="input2">
                             <div class="input-group">
                                 <label> Primer Nombre </label>
-                                <input type="text" name="nom1" value="<?php echo $usuario['p_nombre'] ?>" autocomplete="off" required>
+                                <input type="text" name="nom1" value="<?php echo $usuario['P_NOMBRE'] ?>" autocomplete="off" required>
                             </div>
                             <div class="input-group">
                                 <label> Segundo Nombre </label>
-                                <input type="text" name="nom2" value="<?php echo $usuario['s_nombre'] ?>" autocomplete="off" >
+                                <input type="text" name="nom2" value="<?php echo $usuario['S_NOMBRE'] ?>" autocomplete="off" >
                             </div>    
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label> Apellido Paterno </label>
-                                <input type="text" name="ape1" value="<?php echo $usuario['ape_pat'] ?>" autocomplete="off" required>
+                                <input type="text" name="ape1" value="<?php echo $usuario['APE_PAT'] ?>" autocomplete="off" required>
                             </div>
                             <div class="input-group">
                                 <label> Apellido Materno </label>
-                                <input type="text" name="ape2" value="<?php echo $usuario['ape_mat'] ?>" autocomplete="off" >
+                                <input type="text" name="ape2" value="<?php echo $usuario['APE_MAT'] ?>" autocomplete="off" >
                             </div>    
                         </div>
                         <div class="input-group">
                             <label> Fecha de Nacimiento </label>
-                            <input type="date" name="fecha" value="<?php echo $usuario['fec_nac'] ?>" required>
+                            <input type="date" name="fecha" value="<?php echo $usuario['FEC_NAC'] ?>" required>
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label> Email </label>
-                                <input type="email" name="email" autocomplete="off" value="<?php echo $usuario['email'] ?>" required>
+                                <input type="email" name="email" autocomplete="off" value="<?php echo $usuario['EMAIL'] ?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Telefono </label>
-                                <input type="tel" name="tel" autocomplete="off" value="<?php echo $usuario['telefono'] ?>" required>
+                                <input type="tel" name="tel" autocomplete="off" value="<?php echo $usuario['TELEFONO'] ?>" required>
                             </div>    
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label>Estado</label>
                                 <select name="estado" required>
-                                    <option value="<?php echo $usuario['estado'] ?>" selected><?php echo $usuario['estado'] ?></option>
+                                    <option value="<?php echo $usuario['ESTADO'] ?>" selected><?php echo $usuario['ESTADO'] ?></option>
                                     <option value="Aguascalientes">Aguascalientes</option>
                                     <option value="Baja California">Baja California</option>
                                     <option value="Baja California Sur">Baja California Sur</option>
@@ -281,31 +281,31 @@
                             </div>
                             <div class="input-group">
                                 <label> Ciudad </label>
-                                <input type="text" name="ciudad" autocomplete="off" value="<?php echo $usuario['ciudad'] ?>" required>
+                                <input type="text" name="ciudad" autocomplete="off" value="<?php echo $usuario['CIUDAD'] ?>" required>
                             </div>   
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label> Colonia </label>
-                                <input type="text" name="colonia" autocomplete="off" value="<?php echo $usuario['colonia'] ?>" required>
+                                <input type="text" name="colonia" autocomplete="off" value="<?php echo $usuario['COLONIA'] ?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Calle </label>
-                                <input type="text" name="calle" autocomplete="off" value="<?php echo $usuario['calle'] ?>" required>
+                                <input type="text" name="calle" autocomplete="off" value="<?php echo $usuario['CALLE'] ?>" required>
                             </div>    
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label> Num Ext. </label>
-                                <input type="text" name="num_e" autocomplete="off" value="<?php echo $usuario['numero'] ?>" required>
+                                <input type="text" name="num_e" autocomplete="off" value="<?php echo $usuario['NUMERO'] ?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Num Int. </label>
-                                <input type="text" name="num_i" autocomplete="off" value="<?php echo $usuario['num_interior'] ?>">
+                                <input type="text" name="num_i" autocomplete="off" value="<?php echo $usuario['NUM_INTERIOR'] ?>">
                             </div> 
                             <div class="input-group">
                                 <label> Codigo Postal </label>
-                                <input type="text" name="c_p" autocomplete="off" value="<?php echo $usuario['cod_postal'] ?>" required>
+                                <input type="text" name="c_p" autocomplete="off" value="<?php echo $usuario['COD_POSTAL'] ?>" required>
                             </div>      
                         </div>
                         <?php
@@ -318,7 +318,7 @@
                                     <div style="width: 100%; justify-content: left;">
                                         <label>Genero</label>
                                         <?php
-                                            if ($usuario['genero'] == "mujer") {
+                                            if ($usuario['SEXO'] == "M") {
                                         ?>
                                             <div style="display: flex; width: 30%">
                                                 <input type="radio" name="genero" value="hombre"> Hombre
@@ -339,17 +339,13 @@
                                             }
                                         ?>
                                     </div>
-                                    <div class="input-group" >
-                                        <label >Gustos</label>
-                                        <input type="text" name="gustos" id="gustos" value="<?php echo $usuario['gustos'] ?>">
-                                    </div>
                                 </div>
                         <?php
                             }else{
                                 ?>
                                 <div class="input-group" >
                                         <label >ROL</label>
-                                        <input type="text" name="rol" id="rol" value="<?php echo $usuario['rol'] ?>">
+                                        <input type="text" name="rol" id="rol" value="<?php echo $usuario['ROL'] ?>">
                                     </div>
                                     
                         <?php
@@ -357,7 +353,7 @@
                         ?>
                         <input type="hidden" name="tipoo" value="u">
                         <input type="hidden" name="imp" value="<?php echo $_GET['imp']?>">
-                        <input type="hidden" name="id_us" value="<?php echo $usuario['Id_usuario']?>">
+                        <input type="hidden" name="id_us" value="<?php echo $usuario['ID_PERSONA']?>">
                         <button type="submit" name="btnAction" class="sign-in" id="new-user" value="Guardar"> Guardar </button>
                     </form>
     <!-- FORM DE USUARIO/ADMIN-->
@@ -368,8 +364,8 @@
                 case 'p':
                     //Aqui traere el producto y las .
                     $info_prod=especific_product($_GET['id_prod']);//ya viene como un array asociado
-                    $tallas=json_decode($info_prod['tallas']);
-                    $imgs=json_decode($info_prod['imgs']);
+                    $tallas=$info_prod['TALLA'];
+                    $imgs=$info_prod['RUTA'];
 
 ?>
     <!-- Aqui le metes lo del formulario para el producto. --->
@@ -377,46 +373,40 @@
                         <h1> Editar Producto </h1>
                         <div class="input-group">
                             <label> Nombre </label>
-                            <input type="text" name="nombre" autocomplete="off" value="<?php echo $info_prod['nombre'] ?>" required >
+                            <input type="text" name="nombre" autocomplete="off" value="<?php echo $info_prod['NOMBRE'] ?>" required >
                         </div>
                         <div class="input-group">
                             <label> Detalles </label>
-                            <input type="text" name="detalles" autocomplete="off" value="<?php echo $info_prod['detalles'] ?>" required >
+                            <input type="text" name="detalles" autocomplete="off" value="<?php echo $info_prod['DESCRIPCION'] ?>" required >
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label> Marca </label>
-                                <input type="text" name="marca" autocomplete="off" value="<?php echo $info_prod['marca'] ?>" required>
+                                <input type="text" name="marca" autocomplete="off" value="<?php echo $info_prod['MARCA'] ?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Tipo </label>
                                 <select name="tipo33" required>
-                                    <option value="<?php echo $info_prod['tipo'] ?>"><?php echo $info_prod['tipo'] ?></option>
+                                    <option value="<?php echo $info_prod['tipo'] ?>"><?php echo $info_prod['CATEGORIA'] ?></option>
                                     <option value="playera">Playeras</option>
                                     <option value="pantalon">Pantalones</option>
                                     <option value="chamarra">Chamarras</option>
                                     <option value="sudadera">Sudaderas</option>
                                     <option value="abrigo">Abrigos</option>
+                                    <option value="hombre">Hombre</option>
+                                    <option value="mujer">Mujer</option>
+                                    <option value="ninos">Kids</option>
                                 </select>                            
                             </div>    
                         </div>
                         <div class="input-group">
                             <label> Fecha de Lanzamiento </label>
-                            <input type="date" name="fecha_lan" value="<?php echo $info_prod['Fecha_lanzamiento'] ?>" required>
+                            <input type="date" name="fecha_lan" value="<?php echo $info_prod['FECHA_LANZAMIENTO'] ?>" required>
                         </div>
                         <div class="input2">
                             <div class="input-group">
-                                <label> Categoria </label>
-                                <select name="categoria" required>
-                                    <option value="<?php echo $info_prod['categoria'] ?>"><?php echo $info_prod['categoria'] ?></option>
-                                    <option value="hombre">Hombre</option>
-                                    <option value="mujer">Mujer</option>
-                                    <option value="ninos">Kids</option>
-                                </select> 
-                            </div>
-                            <div class="input-group">
                                 <label> Precio </label>
-                                <input type="text" name="precio" autocomplete="off" value="<?php echo $info_prod['precio'] ?>" required>
+                                <input type="text" name="precio" autocomplete="off" value="<?php echo $info_prod['PRECIO'] ?>" required>
                             </div>    
                         </div>
                         <div class="input2">
@@ -443,26 +433,16 @@
                             <label> Talla XL </label>
                             <input type="text" name="XL" value="<?php echo $tallas->XL?>" required>
                         </div>
-                        <div class="input2">
                             <div class="input-group">
                                 <label> URL IMG-1 </label>
-                                <input type="text" name="img1" autocomplete="off" value="<?php echo $imgs->I1?>"  required>
+                                <input type="text" name="img1" autocomplete="off" value="<?php echo $imgs?>"  required>
                             </div>
-                            <div class="input-group">
-                                <label> URL IMG-2 </label>
-                                <input type="text" name="img2" autocomplete="off" value="<?php echo $imgs->I2?>">
-                            </div>    
-                        </div>
-                        <div class="input-group">
-                            <label> URL IMG-3 </label>
-                            <input type="text" name="img3" value="<?php echo $imgs->I3?>">
-                        </div>
                         <div class="input-group">
                             <label> Estatus </label>
-                            <input type="text" name="status" value="<?php echo $info_prod['status'] ?>" required>
+                            <input type="text" name="status" value="<?php echo $info_prod['STATUS'] ?>" required>
                         </div>
                         <input type="hidden" name="tipoo" value="p">
-                        <input type="hidden" name="id_prod" value="<?php echo $info_prod['ID_producto']?>">
+                        <input type="hidden" name="id_prod" value="<?php echo $info_prod['ID_PRODUCTO']?>">
                         <button type="submit" name="btnAction" class="sign-in" id="new-user" value="Guardar"> Guardar </button>
                     </form>    
 <?php                    

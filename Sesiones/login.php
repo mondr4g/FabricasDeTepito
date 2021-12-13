@@ -14,7 +14,7 @@
 	<title>Login</title>
     <link rel="stylesheet" type="text/css" href="../CSS/log.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" type="text/css" href="../CSS/resp.css?v=<?php echo time(); ?>">
-    <script type="text/javascript" src="../JS/valid.js?v=<?php echo time(); ?>"></script>
+    <!-- <script type="text/javascript" src="../JS/valid.js?v=<?php echo time(); ?>"></script> -->
 </head>
 <body>
     <?php
@@ -56,17 +56,18 @@
 	</main>
     <?php
         }elseif($_POST && (!isset($_SESSION['admin_on']) && !isset($_SESSION['client_on']) )){
+            print_r("Cualquier cosa");
             $usuario=validate_user($_POST['user'],$_POST['passw']);
-            $us=select_user($usuario['Id_usuario']);
+            $us=select_user($usuario['ID_PERSONA']);
             if($usuario){
                 //aqui se decide que tipo de usuario es 
-                if(select_admin($usuario['Id_usuario'])){
-                    $_SESSION['admin_on']=$usuario['Id_usuario'];
+                if(select_admin($usuario['ID_PERSONA'])){
+                    $_SESSION['admin_on']=$usuario['ID_PERSONA'];
                     header("location:../Administracion/index_admin.php");
                 }else{
-                    $_SESSION['client_on']=$usuario['Id_usuario'];
+                    $_SESSION['client_on']=$usuario['ID_PERSONA'];
                     if(intval(date("d")) >= 1 && intval(date("d")) < 20) {
-                        sendMailNew($us['email']);
+                        sendMailNew($us['EMAIL']);
                     }
                     header("location:../index.php");
                 }

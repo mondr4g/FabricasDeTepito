@@ -69,33 +69,34 @@
         <?php
             if(isset($_GET['id_del_prod'])){
                 $prod=especific_product($_GET['id_del_prod']);//recuperar datos del producto
-                $tallas=json_decode($prod['tallas']);//recuperar las tallas
-                $img=json_decode($prod['imgs']);     
+                //$tallas=$prod['TALLA'];//recuperar las tallas
+                $img=$prod['RUTA'];     
         ?>
         <div class="home-grid">
             <div class="product-view">
                     <div class="product-img">
-                        <img src="<?php echo $img->I1 ?>" alt="">
+                        <img src="<?php echo $img ?>" alt="">
                     </div>
             </div>
             <div class="product-info">
                 <form action="" method="post">
-                    <h2><?php echo $prod['nombre']; ?></h2>
+                    <h2><?php echo $prod['NOMBRE']; ?></h2>
                     <p>
-                        Descripcion: <?php echo $prod['detalles']; ?> <br>
+                        Descripcion: <?php echo $prod['DESCRIPCION']; ?> <br>
                     </p>
                     <br>
-                    <h3>$MXN <?php echo $prod['precio']; ?></h3>
+                    <h3>$MXN <?php echo $prod['PRECIO']; ?></h3>
                     <div>
                         <!-- Falta validar las tallas existentes, para enviarla al carrito -->
                         <div class="tallas">
                             <h3>Talla</h3>
                             <?php
-                                foreach($tallas as $key=>$to){
-                                    if($to>0){
+                                /*while(($key = oci_fetch_array($tallas, OCI_ASSOC)) != false)*/
+                                foreach($prod as $key) {
+                                    if(intval($key["STOCK"])>0){
                             ?>  
                                     
-                                    <input type="radio" value="<?php echo $key ?>" id="tallas2" name="talla" checked> <?php echo $key ?>
+                                    <input type="radio" value="<?php echo $key["TALLA"] ?>" id="tallas2" name="talla" checked> <?php echo $key ?>
                             <?php
                                     }
                                 }
@@ -117,7 +118,7 @@
                         <?php
                             //echo $mensaje; 
                             if(isset($_SESSION['admin_on']) || isset($_SESSION['client_on'])){?>
-                            <input type="hidden" name="ID" id="ID" value="<?php echo $prod['ID_producto']?>">
+                            <input type="hidden" name="ID" id="ID" value="<?php echo $prod['ID_PRODUCTO']?>">
                             <input type="hidden" name="CANT" id="CANT"><!--Me falta sacar este valor, del label de arriba no se como xdxd-->
                             <button class="buy" type="submit" name="btnAction" id="btnAction" value="Agregar">Add</button>
                         <?php }?>
@@ -129,23 +130,23 @@
                 if (isset($_SESSION['client_on'])) {
                     $fyp = prods_relacionados($_SESSION['client_on']);
                     if($fyp)  {
-                        foreach ($fyp as $fyprod) {
+                        while(($fyprod = oci_fetch_array($fyp, OCI_ASSOC)) != false) {
                             # code... 
-                            $imags=json_decode($fyprod['imgs']);
+                            $imags=$fyprod['RUTA'];
                             ?>
             
                 <div class="item-box">
                     <form action="" method="POST">
                         <div class="img-item">
-                            <a href="vista_producto.php?id_del_prod=<?php echo $fyprod['ID_producto'] ?>"><img class="imgi" src="<?php echo $imags->I1 ?>" alt="item1"></a> 
+                            <a href="vista_producto.php?id_del_prod=<?php echo $fyprod['ID_PRODUCTO'] ?>"><img class="imgi" src="<?php echo $imags->I1 ?>" alt="item1"></a> 
                         </div>
                         <div class="description">
-                            <h4 name="nombre"><?php echo $fyprod['nombre']?></h4>
-                            <p name="precio"><?php echo $fyprod['precio']?> $MXN</p>
+                            <h4 name="nombre"><?php echo $fyprod['NOMBRE']?></h4>
+                            <p name="precio"><?php echo $fyprod['PRECIO']?> $MXN</p>
                             <div class="info-item">
-                                <input type="hidden" name="nombre" value="<?php echo $fyprod['nombre']?>">
-                                <input type="hidden" name="precio" value="<?php echo $fyprod['precio']?>">
-                                <input type="hidden" name="ID" value="<?php echo $fyprod['Id_producto'] ?>">
+                                <input type="hidden" name="nombre" value="<?php echo $fyprod['NOMBRE']?>">
+                                <input type="hidden" name="precio" value="<?php echo $fyprod['PRECIO']?>">
+                                <input type="hidden" name="ID" value="<?php echo $fyprod['ID_PRODUCTO'] ?>">
                                 <input type="hidden" name="CANT" value="1">
                                 <input type="hidden" name="talla" value="M">
                             </div>
@@ -180,16 +181,16 @@
                 <?php
                     $coments=select_coments_by_product($_GET['id_del_prod']);
                     if($coments){
-                        foreach ($coments as $com) {
-                            $user=select_user($com['Id_cliente']); ?>
+                        while(($com = oci_fetch_array($coments, OCI_ASSOC)) != false) {
+                            $user=select_user($com['ID_CLIENTE']); ?>
                             <div class="comentario">
                                 <div class="info-comment">
-                                    <p>Por: <?php echo $user['username']?> </p>
-                                    <p><?php echo $com['fecha']?></p>
+                                    <p>Por: <?php echo $user['USERNAME']?> </p>
+                                    <p><?php echo $com['FECHA']?></p>
                                 </div>
                                 <br>
                                 <div class="desc-comment">
-                                    <p><?php echo $com['comentario']?></p>
+                                    <p><?php echo $com['COMENTARIO']?></p>
                                 </div>
                                 <hr>    
                             </div>
