@@ -355,7 +355,7 @@
         $i = 0;
         foreach($prod_data['tallas'] as $tallarin){
             $sql_updt += oci_parse($GLOBALS['conne'],"UPDATE INVENTARIO SET stock=".intval($prod_data['newstock'][$i]).",".
-            "precio=".intval($prod_data['precio'][$i])." WHERE id_producto=".intval($prod_data['id'])." AND talla='".$tallarin."';");
+            "precio=".intval($prod_data['precio'])." WHERE id_producto=".intval($prod_data['id'])." AND talla='".$tallarin."';");
             $i++;
         }
 
