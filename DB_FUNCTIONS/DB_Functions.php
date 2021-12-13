@@ -150,44 +150,69 @@
     //Funciones para insertar nuevos usuarios
     //***********************
     //insertar usuarios en general
-    function insert_user($user_data){
-        //$user_data['fecha']
-        //if (!search_user_by_usname($user_data['username'])) {
-            
-            $sql_insert="INSERT INTO `usuario`( `username`, `passw`, `email`, `p_nombre`, `s_nombre`, `ape_pat`, `ape_mat`,`fec_nac`, `telefono`) VALUES ".
-            "('".$user_data['username']."','".sha1($user_data['password'])."','".$user_data['email']."',".
-            "'".$user_data['nom_1']."','".$user_data['nom_2']."','".$user_data['ape_1']."','".$user_data['ape_2']."',".
-            "'".$user_data['fec_nac']."','".$user_data['tel']."');";
+    function insert_user($user_data){ 
+        echo(var_dump($user_data));
+        //echo "<script type=\"text/javascript\">alert(\"Producto eliminado".var_dump($user_data)." de carritos exitosamente\");</script>";
+        $sql = 'BEGIN 
+                PERSONAS_PACK.insert_usuario(
+                    :username, 
+                    :pass,
+                    :email,
+                    :p_nombre,
+                    :s_nombre,
+                    :ape_pat,
+                    :ape_mat,
+                    :fec_nac,
+                    :telefono,
+                    :pais,
+                    :estado,
+                    :ciudad,
+                    :colonia,
+                    :cod_postal,
+                    :calle,
+                    :numero,
+                    :num_interior,
+                    :rol,
+                    :sexo,
+                    :tipo_persona
+                ); 
+            END;';
+        
+        $stmt = oci_parse($GLOBALS['conne'], $sql);
+     
+        //Bind de inputs
+        oci_bind_by_name($stmt,":username",$user_data['username']);
+        oci_bind_by_name($stmt,":pass",sha1($user_data['password']));
+        oci_bind_by_name($stmt,":email",$user_data['email']);
+        oci_bind_by_name($stmt,":p_nombre",$user_data['nom_1']);
+        oci_bind_by_name($stmt,":s_nombre",$user_data['nom_2']);
+        oci_bind_by_name($stmt,":ape_pat",$user_data['ape_1']);
+        oci_bind_by_name($stmt,":ape_mat",$user_data['ape_2']);
+        oci_bind_by_name($stmt,":fec_nac",$user_data['fec_nac']);
+        oci_bind_by_name($stmt,":telefono",$user_data['tel']);
+        oci_bind_by_name($stmt,":pais",$user_data['pais']);
+        oci_bind_by_name($stmt,":estado",$user_data['estado']);
+        oci_bind_by_name($stmt,":ciudad",$user_data['ciudad']);
+        oci_bind_by_name($stmt,":colonia",$user_data['colonia']);
+        oci_bind_by_name($stmt,":cod_postal",$user_data['codigo']);
+        oci_bind_by_name($stmt,":calle",$user_data['calle']);
+        oci_bind_by_name($stmt,":numero",$user_data['num_ext']);
+        oci_bind_by_name($stmt,":num_interior",$user_data['num_int']);
+        oci_bind_by_name($stmt,":rol",$user_data['rol']);
+        oci_bind_by_name($stmt,":sexo",$user_data['genero']);
+        oci_bind_by_name($stmt,":tipo_persona",$user_data['tipoo']);
 
-            //, `ciudad`, `colonia`, `estado`, `calle`, `numero`, `num_interior`, `cod_postal`
-            //'".$user_data['ciudad']."','".$user_data['colonia']."',".
-            //"'".$user_data['estado']."','".$user_data['calle']."',".intval($user_data['num_ext']).",'".$user_data['num_int']."','".$user_data['codigo']."'
-            if ($GLOBALS['conne']->query($sql_insert)) {
-                echo "<script>alert('AAAAA')</script>";
-                $sql_rec="SELECT * FROM usuario ORDER by Id_usuario DESC LIMIT 1";
-                $res=$GLOBALS['conne']->query($sql_rec);
-                if($res->num_rows>0){
-                    $p=$res->fetch_assoc();
-                    $sql_ins_dir="INSERT INTO `direcciones`(`Id_usuario`,`estado`, `ciudad`, `colonia`, `cod_postal`, `calle`, `numero`, `num_interior` ) VALUES ".
-                    "(".intval($p['Id_usuario']).",'".$user_data['estado']."','".$user_data['ciudad']."','".$user_data['colonia']."','".$user_data['calle']."','".$user_data['codigo']."',".intval($user_data['num_ext']).",'".$user_data['num_int']."');";
-                   
-                    if($GLOBALS['conne']->query($sql_ins_dir)){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                    return true;
-                }else{
-                    return false;
-                }
-                return true;
-            } else {
-                echo "la";
-                return false;
-            }
-       // }else{
-           // return false;
-        //}
+        
+        
+        // Execute the statement
+        if(oci_execute($stmt) == true){
+            return true;
+        }else{
+            return false;
+        }
+
+        
+        
     }
     //inertar administrador
     function insert_admin($id_user, $rol){

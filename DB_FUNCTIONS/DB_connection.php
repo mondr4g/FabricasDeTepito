@@ -8,7 +8,8 @@
         die("Error: conexion incorrecta".mysqli_connect_error());
     }*/
 
-    $conne = oci_connect("system","admin","localhost/XE");
+    //$conne = oci_connect("system","admin","localhost/XE");
+    $conne = oci_connect("amaury","123456","localhost/XE");
 
     if (!$conne) {
         $e = oci_error();
