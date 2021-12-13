@@ -539,7 +539,7 @@
 
     //eliminar un producto.
     function delete_product($id_prod){
-        $sql_del=oci_parse($GLOBALS['conne'],"DELETE FROM PRODUCTO WHERE cod_producto=".intval($id_prod).";");
+        $sql_del=oci_parse($GLOBALS['conne'],"DELETE FROM PRODUCTO WHERE cod_producto=".intval($id_prod));
         if(oci_execute($sql_del)){
             return true;
         }else{
@@ -584,10 +584,13 @@
 
     function obtain_pass($id_user){
         //$sql_obta="SELECT passw FROM usuario WHERE Id_usuario=".intval($id_user).";";
-        $stid = oci_parse($GLOBALS['conne'],"SELECT per.pass FROM persona per WHERE per.id_usuario = " . intval($id_user));
-        $result=$GLOBALS['conne']->query($sql_obta);
-        if($result->num_rows>0){
-            return $result->fetch_assoc();
+        $stid = oci_parse($GLOBALS['conne'],"SELECT per.pass FROM persona per WHERE per.id_persona = " . intval($id_user));
+        oci_execute($stid);
+        $result=oci_fetch_array($stid, OCI_ASSOC);
+
+        
+        if($result){
+            return $result;
         }else{
             return null;
         }
@@ -598,16 +601,21 @@
     function modify_cliente($a_data){
         //UPDATE usuario AS u INNER JOIN cliente AS c ON u.Id_usuario=c.Id_cliente INNER JOIN direcciones AS d ON u.Id_usuario=d.Id_usuario SET d.estado='Aguas', c.gustos='caca', u.telefono='000000000'
         
-        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA AS p INNER JOIN CLIENTE AS c ON p.id_persona=c.id_persona INNER JOIN DIRECCION AS d ON p.id_direccion=d.id_direccion SET p.username=".
-        "'".$a_data['username']."', p.pass='".$a_data['password']."', p.email='".$a_data['email']."',".
-        "p.p_nombre='".$a_data['nom_1']."',p.s_nombre='".$a_data['nom_2']."',p.ape_pat='".$a_data['ape_1']."',p.ape_mat='".$a_data['ape_2']."',".
-        "p.fec_nac='".$a_data['fec_nac']."',p.telefono='".$a_data['tel']."',d.pais='".$a_data['pais']."',d.ciudad='".$a_data['ciudad']."',d.colonia='".$a_data['colonia']."',".
-        "d.estado='".$a_data['estado']."',d.calle='".$a_data['calle']."',d.numero='".$a_data['num_ext']."',d.num_interior='".$a_data['num_int']."',d.cod_postal='".$a_data['codigo']."', ".
-        "c.gustos='".$a_data['gustos']."', c.sexo='".$a_data['sexo']."' WHERE p.id_persona=".intval($a_data['id'])." ;");
+        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA SET username='".$a_data['username']."', pass='".$a_data['password']."', email='".$a_data['email']."',p_nombre='".$a_data['nom_1']."',s_nombre='".$a_data['nom_2']."',ape_pat='".$a_data['ape_1']."',ape_mat='".$a_data['ape_2']."',fec_nac=TO_DATE('".$a_data['fec_nac']."'),telefono='".$a_data['tel']."' WHERE id_persona=".intval($a_data['id'])." ");
         
-        if(oci_execute($sql_update)){
-            echo "si jalo";
-            return true;
+
+        if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
+            $sql_update=oci_parse($GLOBALS['conne'],"UPDATE DIRECCION SET ciudad='".$a_data['ciudad']."',colonia='".$a_data['colonia']."',estado='".$a_data['estado']."',calle='".$a_data['calle']."',numero='".$a_data['num_ext']."',num_interior='".$a_data['num_int']."',cod_postal='".$a_data['codigo']."' WHERE id_direccion=".intval($a_data['id_dir'])."");
+            if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
+                $sql_update=oci_parse($GLOBALS['conne'],"UPDATE CLIENTE SET sexo='".$a_data['sexo']."' WHERE id_persona=".intval($a_data['id'])." ");
+                if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
+                    echo "si jalo";
+                    oci_commit($GLOBALS['conne']);
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }else{
             echo "no  jalo";
             return false;
