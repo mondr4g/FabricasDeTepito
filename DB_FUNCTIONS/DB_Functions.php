@@ -413,25 +413,27 @@
     //Actualizar producto
     function update_producto($prod_data){
         //se actualiza todo excepto la fecha de lanzamiento
-        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE PRODUCTO AS p INNER JOIN DETALLE_PRODUCTO AS dp ON p.id_detalle=dp.id_detalle".
-        " INNER JOIN IMAGEN_PRODUCTO AS ip ON p.cod_producto=ip.id_producto INNER JOIN IMAGEN AS i ON i.id_imagen=ip.id_imagen SET p.nombre= '".
-        $prod_data['nombre']."',p.status='".$prod_data['status']."',dp.descripcion= '".$prod_data['descp']."',dp.fecha_lanzamiento='".
-        $prod_data['fecl']."',dp.id_marca='".$prod_data['marca']."',i.titulo='".$prod_data['titulo']."',i.ruta='".$prod_data['path'].
-        "',i.fecha_creacion='".$prod_data['fecc']."',i.descripcion='".$prod_data['desci']."', WHERE p.cod_producto=".intval($prod_data['id']).";");
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE PRODUCTO SET nombre= '".$prod_data['nombre']."',status='".$prod_data['status']."' WHERE p.cod_producto=".intval($prod_data['id'])."");
+        if(oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE DETALLE_PRODUCTO SET descripcion= '".$prod_data['descp']."',fecha_lanzamiento=TO_DATE(".$prod_data['fecl'].",'YYYY-MM-DD'),id_marca='".$prod_data['marca']."' WHERE id_detalle=".$prod_data['id_det']."");
+        if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE IMAGEN SET titulo='".$prod_data['titulo']."',ruta='".$prod_data['path']."',fecha_creacion=TO_DATE(".$prod_data['fecc'].",YYYY-MM-DD),descripcion='".$prod_data['desci']."' WHERE id_imagen=".$prod_data['id_img']."");
+        if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE CATEGORIA_PRODUCTO SET id_categoria=".$prod_data['categoria']." WHERE id_producto=".intval($prod_data['id'])."");
+        if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
         $i = 0;
         foreach($prod_data['tallas'] as $tallarin){
-            $sql_updt += oci_parse($GLOBALS['conne'],"UPDATE INVENTARIO SET stock=".intval($prod_data['newstock'][$i]).",".
-            "precio=".intval($prod_data['precio'])." WHERE id_producto=".intval($prod_data['id'])." AND talla='".$tallarin."';");
+            $sql_updt = oci_parse($GLOBALS['conne'],"UPDATE INVENTARIO SET stock=".intval($prod_data['newstock'][$i]).",precio=".intval($prod_data['precio'])." WHERE id_producto=".intval($prod_data['id'])." AND talla='".$tallarin."';");
+            if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
             $i++;
         }
 
-        $result = oci_execute($sql_updt);
-
-        if($result){
-            return true;
-        }else{
-            return false;
-        }
+        oci_commint($GLOBALS['conne']);
+        return true;
     }
 
 
@@ -642,7 +644,7 @@
     function modify_cliente($a_data){
         //UPDATE usuario AS u INNER JOIN cliente AS c ON u.Id_usuario=c.Id_cliente INNER JOIN direcciones AS d ON u.Id_usuario=d.Id_usuario SET d.estado='Aguas', c.gustos='caca', u.telefono='000000000'
         
-        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA SET username='".$a_data['username']."', pass='".$a_data['password']."', email='".$a_data['email']."',p_nombre='".$a_data['nom_1']."',s_nombre='".$a_data['nom_2']."',ape_pat='".$a_data['ape_1']."',ape_mat='".$a_data['ape_2']."',fec_nac=TO_DATE('".$a_data['fec_nac']."'),telefono='".$a_data['tel']."' WHERE id_persona=".intval($a_data['id'])." ");
+        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA SET username='".$a_data['username']."', pass='".$a_data['password']."', email='".$a_data['email']."',p_nombre='".$a_data['nom_1']."',s_nombre='".$a_data['nom_2']."',ape_pat='".$a_data['ape_1']."',ape_mat='".$a_data['ape_2']."',fec_nac=TO_DATE(".$a_data['fec_nac'].",'YYYY-MM-DD'),telefono='".$a_data['tel']."' WHERE id_persona=".intval($a_data['id'])." ");
         
 
         if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
@@ -665,14 +667,15 @@
     }
 
     function modify_admin($a_data){
-        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA AS u INNER JOIN ADMINISTRADOR AS a ON u.id_persona=a.id_persona INNER JOIN DIRECCION AS d ON u.id_direccion=d.id_direccion SET u.username=".
-        "'".$a_data['username']."', u.pass='".$a_data['password']."', u.email='".$a_data['email']."',".
-        "u.p_nombre='".$a_data['nom_1']."',u.s_nombre='".$a_data['nom_2']."',u.ape_pat='".$a_data['ape_1']."',u.ape_mat='".$a_data['ape_2']."',".
-        "u.fec_nac='".$a_data['fec_nac']."',u.telefono='".$a_data['tel']."',d.pais='".$a_data['pais']."',d.ciudad='".$a_data['ciudad']."',d.colonia='".$a_data['colonia']."',".
-        "d.estado='".$a_data['estado']."',d.calle='".$a_data['calle']."',d.numero='".$a_data['num_ext'].",d.num_interior='".$a_data['num_int']."',d.cod_postal='".$a_data['codigo']."' ".
-        " WHERE u.id_persona=".intval($a_data['id'])." ;");
-        if(oci_execute($sql_update)){
-            return true;
+        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA SET username='".$a_data['username']."', pass='".$a_data['password']."', email='".$a_data['email']."',p_nombre='".$a_data['nom_1']."',s_nombre='".$a_data['nom_2']."',ape_pat='".$a_data['ape_1']."',ape_mat='".$a_data['ape_2']."',fec_nac=TO_DATE(".$a_data['fec_nac'].",'YYYY-MM-DD'),telefono='".$a_data['tel']."' WHERE id_persona=".intval($a_data['id']));
+        if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
+            $sql_update=oci_parse($GLOBALS['conne'],"UPDATE DIRECCION SET ciudad='".$a_data['ciudad']."',colonia='".$a_data['colonia']."',estado='".$a_data['estado']."',calle='".$a_data['calle']."',numero='".$a_data['num_ext']."',num_interior='".$a_data['num_int']."',cod_postal='".$a_data['codigo']."' WHERE id_direccion=".intval($a_data['id_dir'])."");
+            if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
+                oci_commit($GLOBALS['conne']);
+                return true;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
