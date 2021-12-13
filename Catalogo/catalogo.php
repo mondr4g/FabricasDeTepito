@@ -70,65 +70,7 @@
 	</header>	
 	<main>
         <div class="home-grid">
-            <div class="filter" onchange="getFilter()">
-                    <div id="category">
-                        <?php 
-                            if(isset($_GET['categoria']))
-                                echo "<input type='text' id='cat' value='" . $_GET['categoria'] . "'>";
-                            else
-                                echo "<input type='text' id='cat'>";  
-                        ?>
-                    </div>
-                    <div id="rebajas">
-                        <?php 
-                            if(isset($_GET['rebajas']))
-                                echo "<input type='text' id='reb' value='" . $_GET['rebajas'] . "'>";
-                            else
-                                echo "<input type='text' id='reb'>"; 
-                        ?>
-                    </div>
-                    <div id="newLanz">
-                        <?php 
-                            if(isset($_GET['nuevos']))
-                                echo "<input type='text' id='nLanz' value='" . $_GET['nuevos'] . "'>";
-                            else
-                                echo "<input type='text' id='nLanz'>"; 
-                        ?>
-                    </div>
-                    <div class="input-group">
-                        <h3>Articulo</h3>
-                        <input type="checkbox" value="Playera" id="playera" name="playera"> Playeras <br>
-                        <input type="checkbox" value="Pantalon" id="pantalon" name="pantalon"> Pantalones <br>
-                        <input type="checkbox" value="Chamarra" id="chamarra" name="chamarra"> Chamarras <br>
-                        <input type="checkbox" value="Sudadera" id="sudadera" name="sudadera"> Sudaderas <br>
-                        <input type="checkbox" value="Abrigo" id="abrigo" name="abrigo"> Abrigos <br>
-                    </div>
-                    <br>
-                    <div class="input-group">
-                        <h3>Talla</h3>
-                        <input type="checkbox" value="XS" id="xs" name="xs"> XS <br>
-                        <input type="checkbox" value="S" id="s" name="s"> S <br>
-                        <input type="checkbox" value="M" id="m" name="m"> M <br>
-                        <input type="checkbox" value="L" id="l" name="l"> L <br>
-                        <input type="checkbox" value="XL" id="xl" name="xl"> XL <br>
-                    </div>
-                    <br>
-                    <div class="input-group">
-                        <h3>Precio Minimo</h3>
-                        $100 <input type="range" id="iprice" name="initial_price" min="100" max="3100" list="tickmarks" value="100" step="500" onchange="imaxPrice()"> <label id="imaxPrice">$100</label><br><br>
-                        <h3>Precio Maximo</h3>
-                        $100 <input type="range" id="fprice" name="final_price" min="100" max="3100" list="tickmarks" value="3100" step="500" onchange="fmaxPrice()"> <label id="fmaxPrice">$3100</label><br>
-                        <datalist id="tickmarks">
-                            <option value="100">
-                            <option value="600">
-                            <option value="1100">
-                            <option value="1600">
-                            <option value="2100">
-                            <option value="2600">
-                            <option value="3100">
-                        </datalist>
-                    </div>
-            </div>
+            
             <div class="products" id="prod">
                 <?php
                     if(isset($_GET['categoria'])){
