@@ -75,6 +75,10 @@
                                 <input type="tel" name="tel" autocomplete="off" required>
                             </div>    
                         </div>
+                        <div class="input-group">
+                                <label> Pais </label>
+                                <input type="text" name="pais" autocomplete="off" required>
+                            </div> 
                         <div class="input2">
                             <div class="input-group">
                                 <label>Estado</label>
@@ -167,15 +171,11 @@
                                     <div style="width: 100%; justify-content: left;">
                                         <label>Genero</label>
                                         <div style="display: flex; width: 30%">
-                                            <input type="radio" name="genero" value="hombre" checked> Hombre
+                                            <input type="radio" name="genero" value="H" checked> Hombre
                                         </div>
                                         <div style="display: flex; width: 25%">
-                                            <input type="radio" name="genero" value="mujer"> Mujer
+                                            <input type="radio" name="genero" value="M"> Mujer
                                         </div>
-                                    </div>
-                                    <div class="input-group" >
-                                        <label >Gustos</label>
-                                        <input type="text" name="gustos" id="gustos">
                                     </div>
                                 </div>
                         <?php
@@ -187,15 +187,11 @@
                                     <div style="width: 100%; justify-content: left;">
                                         <label>Genero</label>
                                         <div style="display: flex; width: 30%">
-                                            <input type="radio" name="genero" value="hombre"> Hombre
+                                            <input type="radio" name="genero" value="H"> Hombre
                                         </div>
                                         <div style="display: flex; width: 25%">
-                                            <input type="radio" name="genero" value="mujer"> Mujer
+                                            <input type="radio" name="genero" value="M"> Mujer
                                         </div>
-                                    </div>
-                                    <div class="input-group" >
-                                        <label >Gustos</label>
-                                        <input type="text" name="gustos" id="gustos">
                                     </div>
                                 </div>
                         <?php
