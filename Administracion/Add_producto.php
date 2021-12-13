@@ -68,45 +68,64 @@
 	<main>
     <?php
         if (!$_POST) {
+            $CATST = get_all_categories();
+            $MARCS = get_all_marcas();
+
             ?>
         <div class="home-grid">
             <div class="regist">
                 <div class="form-regist">
                 <form method="POST" action="">
-                        <h1> Editar Producto </h1>
-                        <div class="input-group">
-                            <label> Nombre </label>
-                            <input type="text" name="nombre" autocomplete="off"  required >
+                        <h1> Agregar Producto </h1>
+                        <div class="input2">
+                            <div class="input-group">
+                                <label> Nombre </label>
+                                <input type="text" name="nombre" autocomplete="off"  required >
+                            </div>
+                            <div class="input-group">
+                                <label> Descripcion </label>
+                                <input type="text" name="descrip" autocomplete="off"  required >
+                            </div>
                         </div>
+                        
                         <div class="input2">
                             <div class="input-group">
                                 <label> Marca </label>
-                                <input type="text" name="marca" autocomplete="off" required>
+                                <select name="marca" required>
+                                    <option value="no">Seleccione uno...</option>
+                                    <?php
+                                        while(($row = oci_fetch_array($MARCS, OCI_ASSOC)) != false) {
+                                    ?>
+                                        <option value="<?php echo $row["ID_MARCA"]; ?>"><?php echo $row["NOMBRE"]; ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                </select>                            
                             </div>
                             <div class="input-group">
-                                <label> Tipo </label>
-                                <select name="tipo" required>
-                                    <option value="no">Seleccione uno...</option>
-                                    <option value="playera">Playeras</option>
-                                    <option value="pantalon">Pantalones</option>
-                                    <option value="chamarra">Chamarras</option>
-                                    <option value="Sudadera">Sudaderas</option>
-                                    <option value="abrigo">Abrigos</option>
-                                </select>                            
+                                <label> Fecha de Lanzamiento </label>
+                                <input type="date" name="fecha_lan"  required>
                             </div>    
                         </div>
-                        <div class="input-group">
-                            <label> Fecha de Lanzamiento </label>
-                            <input type="date" name="nuevos"  required>
-                        </div>
+                        
                         <div class="input2">
                             <div class="input-group">
                                 <label> Categoria </label>
                                 <select name="categoria" required>
                                     <option value="">Elije categoria</option>
-                                    <option value="hombre">Hombre</option>
+                                    <?php
+                                        while(($row = oci_fetch_array($CATST, OCI_ASSOC)) != false) {
+                                    ?>
+                                            <option value="<?php echo $row["NOMBRE"]; ?>"><?php echo $row["NOMBRE"]; ?></option>
+                                    <?php
+                                        }
+                                    ?>
+
+                                <!---$_COOKIE
                                     <option value="mujer">Mujer</option>
                                     <option value="ninos">Kids</option>
+                                -->
+                                    
                                 </select> 
                             </div>
                             <div class="input-group">
@@ -134,36 +153,108 @@
                                 <input type="text" name="L" autocomplete="off"  required>
                             </div>    
                         </div>
-                        <div class="input-group">
-                            <label> Talla XL </label>
-                            <input type="text" name="XL"  required>
-                        </div>
                         <div class="input2">
                             <div class="input-group">
-                                <label> URL IMG-1 </label>
+                                <label> Talla XL </label>
+                                <input type="text" name="XL"  required>
+                            </div>
+                            <div class="input-group">
+                                <label> Talla XXL </label>
+                                <input type="text" name="XL"  required>
+                            </div>
+                        </div>
+                        
+                        <div class="input2">
+                            <div class="input-group">
+                                <label> URL IMAGEN </label>
                                 <input type="text" name="img1" autocomplete="off"  required>
                             </div>
                             <div class="input-group">
-                                <label> URL IMG-2 </label>
-                                <input type="text" name="img2" autocomplete="off" required>
-                            </div>    
-                        </div>
-                        <div class="input-group">
-                            <label> URL IMG-3 </label>
-                            <input type="text" name="img3"  required>
-                        </div>
-                        <div class="input-group">
-                            <label> Estatus </label>
-                            <input type="text" name="status"  required>
+                                <label> Estatus </label>
+                                <select name="status" required>
+                                    <option value="no">Seleccione uno...</option>
+                                    <option value="Y">ACTIVO</option>
+                                    <option value="N">INACTIVO</option>
+                                </select>
+                            </div>
                         </div>
                         <input type="hidden" name="tipo" value="p">
                         <button type="submit" name="btnAction" class="sign-in" id="new-user" value="Guardar"> Guardar </button>
                     </form>    
 <?php
         }elseif($_POST && isset($_SESSION['admin_on'])){
-            $tallas='{"XS":'.$_POST['XS'].',"S":'.$_POST['S'].',"M":'.$_POST['M'].',"L":'.$_POST['L'].',"XL":'.$_POST['XL'].'}';
-            $ims='{"I1":"'.$_POST['img1'].'", "I2":"'.$_POST['img2'].'","I3":"'.$_POST['img3'].'"}';
-            $prod_daaaa=array();
+            
+            /*IMAGENES
+            [
+                {
+                    "titulo":" ",
+                    "ruta":" ",
+                    "descripcion":" "
+                }
+            ] 
+            */
+
+            /*STOCK DE TALLAS
+            [
+                {
+                    "stock":" ",
+                    "talla" : " ",
+                    "precio" : " ",
+                }
+             ]   
+            */
+            $prec = $_POST['precio'];
+            $tallas = '
+                [
+                    {
+                        "stock":"'.$_POST['XS'].'",
+                        "talla" : "XS",
+                        "precio" : "'.$prec.'"
+                    },
+                    {
+                        "stock":"'.$_POST['S'].'",
+                        "talla" : "S",
+                        "precio" : "'.$prec.'"
+                    },
+                    {
+                        "stock":"'.$_POST['M'].'",
+                        "talla" : "M",
+                        "precio" : "'.$prec.'"
+                    },
+                    {
+                        "stock":"'.$_POST['L'].'",
+                        "talla" : "L",
+                        "precio" : "'.$prec.'"
+                    },
+                    {
+                        "stock":"'.$_POST['XL'].'",
+                        "talla" : "XL",
+                        "precio" : "'.$prec.'"
+                    }
+                ]
+            ';
+            
+            $ims='
+                [
+                    {
+                        "titulo":"Imagen X",
+                        "ruta":"'.$_POST['img1'].'", 
+                        "descripcion":"una imagen mas."
+                    }
+                ]';
+            
+            
+            $cats = '["'.$_POST['categoria'].'"]';
+            $new_prod_data = array(
+                "nombre" => $_POST['nombre'],
+                "descrip" => $_POST['descrip'],
+                "marca" => $_POST['marca'],
+                "cate" => $cats,
+                "talls" => $tallas,
+                "imgs" => $ims
+            );
+            
+            /*$prod_daaaa=array();
             $prod_daaaa+=["id"=>$_POST['id_us']];
             $prod_daaaa+=["nombre" => $_POST['nombre']];
             $prod_daaaa+=["detalles" => $_POST['detalles']];
@@ -174,9 +265,9 @@
             $prod_daaaa+=["categoria" => $_POST['categoria']];
             $prod_daaaa+=["fecha" => $_POST['fecha_lan']];
             $prod_daaaa+=["imgs" => $imgs];
-            $prod_daaaa+=["status"=> $_POST['status']];
+            $prod_daaaa+=["status"=> $_POST['status']];*/
         
-            if(insert_product($prod_daaaa)){
+            if(insert_product($new_prod_data)){
                 //muestra confirmacion de que si se logro el update
                 header('location:index_admin.php');
             }else{

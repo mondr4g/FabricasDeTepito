@@ -353,6 +353,46 @@
     }
     //insertar producto
     function insert_product($p_data){
+
+        /* "nombre" => $_POST['nombre'],
+                "descrip" => $_POST['descrip'],
+                "marca" => $_POST['marca'],
+                "fec_lan" => $_POST['fecha_lan'],
+                "cate" => $_POST['categoria'],
+                "talls" => $tallas,
+                "imgs" */
+       
+        $sql = 'BEGIN 
+                PRODUCTOS_PACK.insert_new_product(
+                    :nombre_producto, 
+                    :id_marca,
+                    :descripcion,
+                    :categorias,
+                    :imagenes,
+                    :inventario
+                ); 
+            END;';
+        
+        $stmt = oci_parse($GLOBALS['conne'], $sql);
+        
+        //Bind de inputs
+        oci_bind_by_name($stmt,":nombre_producto",$user_data['nombre']);
+        oci_bind_by_name($stmt,":id_marca",$user_data['descrip']);
+        oci_bind_by_name($stmt,":descripcion",$user_data['marca']);
+        oci_bind_by_name($stmt,":categorias",$user_data['cate']);
+        oci_bind_by_name($stmt,":imagenes",$user_data['talls']);
+        oci_bind_by_name($stmt,":inventario",$user_data['imgs']);
+
+        // Execute the statement
+        if(oci_execute($stmt) == true){
+            return true;
+        }else{
+            return false;
+        }
+
+
+
+        /* 
         //Asumimos que los datos del nuevo producto vienen definidos en un vector.
         //se supone que la estructura de las imagenes ya viene definida como string JSON.
         //se supone que las tallas vienen definidas en un string JSON
@@ -367,6 +407,7 @@
         }else{
             return false;
         }
+        */
     }
 
     //Actualizar producto
@@ -770,6 +811,22 @@
             return false;
         }
 
+    }
+
+    /*funciones pa lo de agregar producto */
+
+    function get_all_categories(){
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM CATEGORIA");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
+        return $stid;
+    }
+
+    function get_all_marcas(){
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM MARCA");
+        oci_execute($stid);
+        oci_close($GLOBALS['conne']);
+        return $stid;
     }
 
 ?>
