@@ -150,44 +150,69 @@
     //Funciones para insertar nuevos usuarios
     //***********************
     //insertar usuarios en general
-    function insert_user($user_data){
-        //$user_data['fecha']
-        //if (!search_user_by_usname($user_data['username'])) {
-            
-            $sql_insert="INSERT INTO `usuario`( `username`, `passw`, `email`, `p_nombre`, `s_nombre`, `ape_pat`, `ape_mat`,`fec_nac`, `telefono`) VALUES ".
-            "('".$user_data['username']."','".sha1($user_data['password'])."','".$user_data['email']."',".
-            "'".$user_data['nom_1']."','".$user_data['nom_2']."','".$user_data['ape_1']."','".$user_data['ape_2']."',".
-            "'".$user_data['fec_nac']."','".$user_data['tel']."');";
+    function insert_user($user_data){ 
+        echo(var_dump($user_data));
+        //echo "<script type=\"text/javascript\">alert(\"Producto eliminado".var_dump($user_data)." de carritos exitosamente\");</script>";
+        $sql = 'BEGIN 
+                PERSONAS_PACK.insert_usuario(
+                    :username, 
+                    :pass,
+                    :email,
+                    :p_nombre,
+                    :s_nombre,
+                    :ape_pat,
+                    :ape_mat,
+                    :fec_nac,
+                    :telefono,
+                    :pais,
+                    :estado,
+                    :ciudad,
+                    :colonia,
+                    :cod_postal,
+                    :calle,
+                    :numero,
+                    :num_interior,
+                    :rol,
+                    :sexo,
+                    :tipo_persona
+                ); 
+            END;';
+        
+        $stmt = oci_parse($GLOBALS['conne'], $sql);
+     
+        //Bind de inputs
+        oci_bind_by_name($stmt,":username",$user_data['username']);
+        oci_bind_by_name($stmt,":pass",sha1($user_data['password']));
+        oci_bind_by_name($stmt,":email",$user_data['email']);
+        oci_bind_by_name($stmt,":p_nombre",$user_data['nom_1']);
+        oci_bind_by_name($stmt,":s_nombre",$user_data['nom_2']);
+        oci_bind_by_name($stmt,":ape_pat",$user_data['ape_1']);
+        oci_bind_by_name($stmt,":ape_mat",$user_data['ape_2']);
+        oci_bind_by_name($stmt,":fec_nac",$user_data['fec_nac']);
+        oci_bind_by_name($stmt,":telefono",$user_data['tel']);
+        oci_bind_by_name($stmt,":pais",$user_data['pais']);
+        oci_bind_by_name($stmt,":estado",$user_data['estado']);
+        oci_bind_by_name($stmt,":ciudad",$user_data['ciudad']);
+        oci_bind_by_name($stmt,":colonia",$user_data['colonia']);
+        oci_bind_by_name($stmt,":cod_postal",$user_data['codigo']);
+        oci_bind_by_name($stmt,":calle",$user_data['calle']);
+        oci_bind_by_name($stmt,":numero",$user_data['num_ext']);
+        oci_bind_by_name($stmt,":num_interior",$user_data['num_int']);
+        oci_bind_by_name($stmt,":rol",$user_data['rol']);
+        oci_bind_by_name($stmt,":sexo",$user_data['genero']);
+        oci_bind_by_name($stmt,":tipo_persona",$user_data['tipoo']);
 
-            //, `ciudad`, `colonia`, `estado`, `calle`, `numero`, `num_interior`, `cod_postal`
-            //'".$user_data['ciudad']."','".$user_data['colonia']."',".
-            //"'".$user_data['estado']."','".$user_data['calle']."',".intval($user_data['num_ext']).",'".$user_data['num_int']."','".$user_data['codigo']."'
-            if ($GLOBALS['conne']->query($sql_insert)) {
-                echo "<script>alert('AAAAA')</script>";
-                $sql_rec="SELECT * FROM usuario ORDER by Id_usuario DESC LIMIT 1";
-                $res=$GLOBALS['conne']->query($sql_rec);
-                if($res->num_rows>0){
-                    $p=$res->fetch_assoc();
-                    $sql_ins_dir="INSERT INTO `direcciones`(`Id_usuario`,`estado`, `ciudad`, `colonia`, `cod_postal`, `calle`, `numero`, `num_interior` ) VALUES ".
-                    "(".intval($p['Id_usuario']).",'".$user_data['estado']."','".$user_data['ciudad']."','".$user_data['colonia']."','".$user_data['calle']."','".$user_data['codigo']."',".intval($user_data['num_ext']).",'".$user_data['num_int']."');";
-                   
-                    if($GLOBALS['conne']->query($sql_ins_dir)){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                    return true;
-                }else{
-                    return false;
-                }
-                return true;
-            } else {
-                echo "la";
-                return false;
-            }
-       // }else{
-           // return false;
-        //}
+        
+        
+        // Execute the statement
+        if(oci_execute($stmt) == true){
+            return true;
+        }else{
+            return false;
+        }
+
+        
+        
     }
     //inertar administrador
     function insert_admin($id_user, $rol){
@@ -347,25 +372,27 @@
     //Actualizar producto
     function update_producto($prod_data){
         //se actualiza todo excepto la fecha de lanzamiento
-        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE PRODUCTO AS p INNER JOIN DETALLE_PRODUCTO AS dp ON p.id_detalle=dp.id_detalle".
-        " INNER JOIN IMAGEN_PRODUCTO AS ip ON p.cod_producto=ip.id_producto INNER JOIN IMAGEN AS i ON i.id_imagen=ip.id_imagen SET p.nombre= '".
-        $prod_data['nombre']."',p.status='".$prod_data['status']."',dp.descripcion= '".$prod_data['descp']."',dp.fecha_lanzamiento='".
-        $prod_data['fecl']."',dp.id_marca='".$prod_data['marca']."',i.titulo='".$prod_data['titulo']."',i.ruta='".$prod_data['path'].
-        "',i.fecha_creacion='".$prod_data['fecc']."',i.descripcion='".$prod_data['desci']."', WHERE p.cod_producto=".intval($prod_data['id']).";");
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE PRODUCTO SET nombre= '".$prod_data['nombre']."',status='".$prod_data['status']."' WHERE p.cod_producto=".intval($prod_data['id'])."");
+        if(oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE DETALLE_PRODUCTO SET descripcion= '".$prod_data['descp']."',fecha_lanzamiento=TO_DATE(".$prod_data['fecl'].",'YYYY-MM-DD'),id_marca='".$prod_data['marca']."' WHERE id_detalle=".$prod_data['id_det']."");
+        if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE IMAGEN SET titulo='".$prod_data['titulo']."',ruta='".$prod_data['path']."',fecha_creacion=TO_DATE(".$prod_data['fecc'].",YYYY-MM-DD),descripcion='".$prod_data['desci']."' WHERE id_imagen=".$prod_data['id_img']."");
+        if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE CATEGORIA_PRODUCTO SET id_categoria=".$prod_data['categoria']." WHERE id_producto=".intval($prod_data['id'])."");
+        if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
+
         $i = 0;
         foreach($prod_data['tallas'] as $tallarin){
-            $sql_updt += oci_parse($GLOBALS['conne'],"UPDATE INVENTARIO SET stock=".intval($prod_data['newstock'][$i]).",".
-            "precio=".intval($prod_data['precio'])." WHERE id_producto=".intval($prod_data['id'])." AND talla='".$tallarin."';");
+            $sql_updt = oci_parse($GLOBALS['conne'],"UPDATE INVENTARIO SET stock=".intval($prod_data['newstock'][$i]).",precio=".intval($prod_data['precio'])." WHERE id_producto=".intval($prod_data['id'])." AND talla='".$tallarin."';");
+            if(!oci_execute($sql_updt, OCI_NO_AUTO_COMMIT))return false;
             $i++;
         }
 
-        $result = oci_execute($sql_updt);
-
-        if($result){
-            return true;
-        }else{
-            return false;
-        }
+        oci_commit($GLOBALS['conne']);
+        return true;
     }
 
 
@@ -598,14 +625,15 @@
     }
 
     function modify_admin($a_data){
-        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA AS u INNER JOIN ADMINISTRADOR AS a ON u.id_persona=a.id_persona INNER JOIN DIRECCION AS d ON u.id_direccion=d.id_direccion SET u.username=".
-        "'".$a_data['username']."', u.pass='".$a_data['password']."', u.email='".$a_data['email']."',".
-        "u.p_nombre='".$a_data['nom_1']."',u.s_nombre='".$a_data['nom_2']."',u.ape_pat='".$a_data['ape_1']."',u.ape_mat='".$a_data['ape_2']."',".
-        "u.fec_nac='".$a_data['fec_nac']."',u.telefono='".$a_data['tel']."',d.pais='".$a_data['pais']."',d.ciudad='".$a_data['ciudad']."',d.colonia='".$a_data['colonia']."',".
-        "d.estado='".$a_data['estado']."',d.calle='".$a_data['calle']."',d.numero='".$a_data['num_ext'].",d.num_interior='".$a_data['num_int']."',d.cod_postal='".$a_data['codigo']."' ".
-        " WHERE u.id_persona=".intval($a_data['id'])." ;");
-        if(oci_execute($sql_update)){
-            return true;
+        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA SET username='".$a_data['username']."', pass='".$a_data['password']."', email='".$a_data['email']."',p_nombre='".$a_data['nom_1']."',s_nombre='".$a_data['nom_2']."',ape_pat='".$a_data['ape_1']."',ape_mat='".$a_data['ape_2']."',fec_nac=TO_DATE(".$a_data['fec_nac'].",'YYYY-MM-DD'),telefono='".$a_data['tel']."' WHERE id_persona=".intval($a_data['id']));
+        if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
+            $sql_update=oci_parse($GLOBALS['conne'],"UPDATE DIRECCION SET ciudad='".$a_data['ciudad']."',colonia='".$a_data['colonia']."',estado='".$a_data['estado']."',calle='".$a_data['calle']."',numero='".$a_data['num_ext']."',num_interior='".$a_data['num_int']."',cod_postal='".$a_data['codigo']."' WHERE id_direccion=".intval($a_data['id_dir'])."");
+            if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
+                oci_commit($GLOBALS['conne']);
+                return true;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }

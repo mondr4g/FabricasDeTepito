@@ -157,8 +157,8 @@
                                         <label>Tipo</label>
                                         <select name="tipoo">
                                             <option value="no" >Seleccionar tipo</option>
-                                            <option value="cl" >Cliente</option>
-                                            <option value="ad" >Administrador</option>
+                                            <option value="C" >Cliente</option>
+                                            <option value="A" >Administrador</option>
                                         </select>
                                     </div>
                                     <div class="input-group">
@@ -182,7 +182,8 @@
                             }else{
                                 //esta parte se puede mejorar, para mostrar o elegir las categorias tanto de genero como para los gustos
                         ?>
-                                <input type="hidden" name="tipo" value="1">
+                                <input type="hidden" name="tipoo" value="C">
+                                <input type="hidden" name="rol" value="Csa">
                                 <div class="input2">
                                     <div style="width: 100%; justify-content: left;">
                                         <label>Genero</label>
@@ -218,6 +219,7 @@
                 "ape_2" => $_POST['ape2'],
                 "fec_nac" => $_POST['fecha'],
                 "email" => $_POST['email'],
+                "pais" => $_POST['pais'],
                 "tel" => $_POST['tel'],
                 "estado" => $_POST['estado'],
                 "ciudad" => $_POST['ciudad'],
@@ -225,13 +227,17 @@
                 "calle" => $_POST['calle'],
                 "num_ext" => $_POST['num_e'],
                 "num_int" => $_POST['num_i'],
-                "codigo" => $_POST['c_p']
+                "codigo" => $_POST['c_p'],
+                "tipoo" => $_POST['tipoo'],
+                'genero' => $_POST['genero'],
+                "rol" => $_POST['rol']
             );
 
             //evaluamos si se inserto de manera correcta o no
             if(insert_user($new_user_data)){
                 //aqui para meter scripts de JS o mensajes
-                //abierto a sugerencias
+                //abierto a sugerencias/ */
+                /* 
                 $id=select_user_id($new_user_data['username']);
                 if(isset($_SESSION['admin_on'])){
                     if($_POST['tipoo']=="cl"){
@@ -245,7 +251,7 @@
                    
                     insert_client($id,$_POST['genero'],$_POST['gustos']);
                 }
-
+                */
                 if($_SESSION['admin_on'])
                     header('location:index_admin.php');
                 else

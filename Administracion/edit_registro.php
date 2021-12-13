@@ -88,6 +88,8 @@
                         $prod_daaaa+=["fecha" => $_POST['fecha_lan']];
                         $prod_daaaa+=["imgs" => $ims];
                         $prod_daaaa+=["status"=> $_POST['status']];
+                        $prod_daaaa+=["id_det"=> $_POST['id_det']];
+                        $prod_daaaa+=["id_img"=> $_POST['id_img']];
                         
                         if (update_producto($prod_daaaa)) {
                             //muestra confirmacion de que si se logro el update
@@ -414,26 +416,26 @@
                         <div class="input2">
                             <div class="input-group">
                                 <label> Talla XS </label>
-                                <input type="text" name="stockXS" autocomplete="off" value="<?php echo $tallas->XS?>" required>
+                                <input type="text" name="stockXS" autocomplete="off" value="<?php echo $info_prod['STOCK']?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Talla S </label>
-                                <input type="text" name="stockS" autocomplete="off" value="<?php echo $tallas->S?>" required>
+                                <input type="text" name="stockS" autocomplete="off" value="<?php echo $info_prod['STOCK']?>" required>
                             </div>    
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label> Talla M </label>
-                                <input type="text" name="stockM" autocomplete="off" value="<?php echo $tallas->M?>" required>
+                                <input type="text" name="stockM" autocomplete="off" value="<?php echo $info_prod['STOCK']?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Talla L </label>
-                                <input type="text" name="stockL" autocomplete="off" value="<?php echo $tallas->L?>" required>
+                                <input type="text" name="stockL" autocomplete="off" value="<?php echo $info_prod['STOCK']?>" required>
                             </div>    
                         </div>
                         <div class="input-group">
                             <label> Talla XL </label>
-                            <input type="text" name="stockXL" value="<?php echo $tallas->XL?>" required>
+                            <input type="text" name="stockXL" value="<?php echo $info_prod['STOCK']?>" required>
                         </div>
                             <div class="input-group">
                                 <label> URL IMG-1 </label>
@@ -445,6 +447,8 @@
                         </div>
                         <input type="hidden" name="tipoo" value="p">
                         <input type="hidden" name="id_prod" value="<?php echo $info_prod['ID_PRODUCTO']?>">
+                        <input type="hidden" name="id_det" value="<?php echo $info_prod['ID_DETALLE']?>">
+                        <input type="hidden" name="id_img" value="<?php echo $info_prod['ID_INVENTARIO']?>">
                         <button type="submit" name="btnAction" class="sign-in" id="new-user" value="Guardar"> Guardar </button>
                     </form>    
 <?php                    
