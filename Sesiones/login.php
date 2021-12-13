@@ -67,7 +67,7 @@
                 }else{
                     $_SESSION['client_on']=$usuario['ID_PERSONA'];
                     if(intval(date("d")) >= 1 && intval(date("d")) < 20) {
-                        sendMailNew($us['EMAIL']);
+                        //sendMailNew($us['EMAIL']);
                     }
                     header("location:../index.php");
                 }

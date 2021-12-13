@@ -322,19 +322,19 @@
                                             if ($usuario['SEXO'] == "M") {
                                         ?>
                                             <div style="display: flex; width: 30%">
-                                                <input type="radio" name="genero" value="hombre"> Hombre
+                                                <input type="radio" name="genero" value="H"> Hombre
                                             </div>
                                             <div style="display: flex; width: 25%">
-                                                <input type="radio" name="genero" value="mujer" checked> Mujer
+                                                <input type="radio" name="genero" value="M" checked> Mujer
                                             </div>
                                         <?php
                                             }else {
                                                 ?>
                                             <div style="display: flex; width: 30%">
-                                                <input type="radio" name="genero" value="hombre" checked> Hombre
+                                                <input type="radio" name="genero" value="H" checked> Hombre
                                             </div>
                                             <div style="display: flex; width: 25%">
-                                                <input type="radio" name="genero" value="mujer"> Mujer
+                                                <input type="radio" name="genero" value="M"> Mujer
                                             </div>
                                         <?php
                                             }

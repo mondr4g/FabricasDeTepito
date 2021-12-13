@@ -575,14 +575,13 @@
     //faltan
     function modify_cliente($a_data){
         //UPDATE usuario AS u INNER JOIN cliente AS c ON u.Id_usuario=c.Id_cliente INNER JOIN direcciones AS d ON u.Id_usuario=d.Id_usuario SET d.estado='Aguas', c.gustos='caca', u.telefono='000000000'
+        echo($a_data["fec_nac"]);
+        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA SET username='".$a_data['username']."', pass='".$a_data['password']."', email='".$a_data['email']."',p_nombre='".$a_data['nom_1']."',s_nombre='".$a_data['nom_2']."',ape_pat='".$a_data['ape_1']."',ape_mat='".$a_data['ape_2']."',fec_nac=TO_DATE('".$a_data['fec_nac']."','YYYY-MM-DD'),telefono='".$a_data['tel']."' WHERE id_persona=".intval($a_data['id'])." ");
         
-        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA SET username='".$a_data['username']."', pass='".$a_data['password']."', email='".$a_data['email']."',p_nombre='".$a_data['nom_1']."',s_nombre='".$a_data['nom_2']."',ape_pat='".$a_data['ape_1']."',ape_mat='".$a_data['ape_2']."',fec_nac=TO_DATE('".$a_data['fec_nac']."'),telefono='".$a_data['tel']."' WHERE id_persona=".intval($a_data['id'])." ");
-        
-
         if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
             $sql_update=oci_parse($GLOBALS['conne'],"UPDATE DIRECCION SET ciudad='".$a_data['ciudad']."',colonia='".$a_data['colonia']."',estado='".$a_data['estado']."',calle='".$a_data['calle']."',numero='".$a_data['num_ext']."',num_interior='".$a_data['num_int']."',cod_postal='".$a_data['codigo']."' WHERE id_direccion=".intval($a_data['id_dir'])."");
             if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
-                $sql_update=oci_parse($GLOBALS['conne'],"UPDATE CLIENTE SET sexo='".$a_data['sexo']."' WHERE id_persona=".intval($a_data['id'])." ");
+                $sql_update=oci_parse($GLOBALS['conne'],"UPDATE CLIENTE SET sexo='".$a_data['SEXO']."' WHERE id_persona=".intval($a_data['id'])." ");
                 if(oci_execute($sql_update, OCI_NO_AUTO_COMMIT)){
                     echo "si jalo";
                     oci_commit($GLOBALS['conne']);

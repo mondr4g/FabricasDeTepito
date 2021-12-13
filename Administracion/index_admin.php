@@ -149,9 +149,9 @@
                     while(($us = oci_fetch_array($clientes, OCI_ASSOC)) != false) {
                         # code...
                         $img=null;
-                        if($us['SEXO']=="H"){
+                        if(@$us['SEXO']=="H"){
                             $img="../img/hombre.png";//Aqui mete el link de hombre
-                        }elseif($us['SEXO']=="M"){
+                        }elseif(@$us['SEXO']=="M"){
                             $img="../img/mujer.png" ;//imagen de mujer
                         }
                 ?> 
