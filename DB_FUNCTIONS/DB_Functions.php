@@ -61,7 +61,8 @@
     //funcion para obtener el usuario
     function validate_user($username,$password){
         $usuario=null;
-        $sql_select = "SELECT * FROM usuario WHERE username = '$username';";
+        //$sql_select = "SELECT * FROM persona WHERE username = '$username';";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona WHERE username = '$username'");
         $result = $GLOBALS['conne']->query($sql_select);
         if ($result->num_rows > 0) {
             $usuario = $result->fetch_assoc();
@@ -79,7 +80,8 @@
 
     function select_user_id($username){
         $usuario=null;
-        $sql_select = "SELECT * FROM usuario WHERE username = '$username';";
+        //$sql_select = "SELECT * FROM usuario WHERE username = '$username';";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona WHERE username = '$username'");
         $result = $GLOBALS['conne']->query($sql_select);
         if ($result->num_rows > 0) {
             $usuario = $result->fetch_assoc();
@@ -90,7 +92,8 @@
     }
     //funcion para identificar el usuario como cliente
     function select_client($id_usuario){
-        $sql_select_client= "SELECT * FROM cliente WHERE Id_cliente = '$id_usuario';";
+        //$sql_select_client= "SELECT * FROM cliente WHERE id_persona = '$id_usuario';";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM cliente WHERE id_persona = '$id_usuario'");
         $cli=$GLOBALS['conne']->query($sql_select_client);
         if($cli->num_rows>0){
             return true ;
@@ -101,7 +104,8 @@
     }
     //funcion para identificar al usuario como admin
     function select_admin($id_usuario){
-        $sql_select_admin= "SELECT * FROM administrador WHERE Id_admin = '$id_usuario' ;";
+        //$sql_select_admin= "SELECT * FROM administrador WHERE Id_admin = '$id_usuario' ;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM administrador WHERE id_persona = '$id_usuario'");
         $ad=$GLOBALS['conne']->query($sql_select_admin);
         if($ad->num_rows>0){
             return true;
@@ -112,7 +116,8 @@
 
     //funcion que retorna un usuario
     function select_user($id_usuario){
-        $sql_select_admin= "SELECT * FROM usuario WHERE Id_usuario = '$id_usuario' ;";
+        //$sql_select_admin= "SELECT * FROM usuario WHERE Id_usuario = '$id_usuario' ;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona WHERE id_persona = '$id_usuario'");
         $ad=$GLOBALS['conne']->query($sql_select_admin);
         if($ad->num_rows>0){
             return $ad->fetch_assoc();
@@ -123,7 +128,8 @@
 
     //funcion para recuperar admin de ventas
     function select_sales_admin(){
-        $sql_sel="SELECT * FROM usuario INNER JOIN administrador ON usuario.Id_usuario=administrador.Id_admin WHERE administrador.rol='ventas'";
+        //$sql_sel="SELECT * FROM usuario INNER JOIN administrador ON usuario.Id_usuario=administrador.Id_admin WHERE administrador.rol='ventas'";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p JOIN administrador a ON a.id_persona = p.id_persona WHERE a.rol = 'ventas'");
         $r=$GLOBALS['conne']->query($sql_sel);
         if($r->num_rows>0){
             return $r->fetch_assoc();
@@ -195,7 +201,8 @@
 
     //RECUPERAR TODOS LOS CLIENTES
     function select_all_clients(){
-        $sql_select_client="SELECT * FROM usuario INNER JOIN cliente ON usuario.Id_usuario=cliente.Id_cliente;";
+        //$sql_select_client="SELECT * FROM usuario INNER JOIN cliente ON usuario.Id_usuario=cliente.Id_cliente;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p JOIN cliente c ON c.id_persona=p.id_persona");
         $result=$GLOBALS['conne']->query($sql_select_client);
         if($result->num_rows>0){
             return $result;
@@ -206,7 +213,8 @@
 
     //busqueda de cliente por username
     function search_client_by_name($username){
-        $sql_bus="SELECT * FROM usuario NATURAL JOIN cliente WHERE usuario.username LIKE '%$username%';";
+        //$sql_bus="SELECT * FROM usuario NATURAL JOIN cliente WHERE usuario.username LIKE '%$username%';";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p NATURAL JOIN cliente c WHERE p.username LIKE '%$username%'");
         $result=$GLOBALS['conne']->query($sql_bus);
         if($result->num_rows>0){
             return $result->fetch_assoc();
@@ -217,7 +225,8 @@
 
     //busqueda de admin por username
     function search_admin_by_name($username){
-        $sql_bus="SELECT * FROM usuario NATURAL JOIN administrador WHERE usuario.username LIKE '%$username%';";
+        //$sql_bus="SELECT * FROM usuario NATURAL JOIN administrador WHERE usuario.username LIKE '%$username%';";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p NATURAL JOIN administrador a WHERE p.username LIKE '%$username%'");
         $result=$GLOBALS['conne']->query($sql_bus);
         if($result->num_rows>0){
             return $result->fetch_assoc();
@@ -228,8 +237,9 @@
 
     //buscar usuario por username
     function search_user_by_usname($usname){
-        $sql_select="SELECT * FROM usuario WHERE ".
-        "usuario.username='".$usname."';";
+        //$sql_select="SELECT * FROM usuario WHERE ".
+        //"usuario.username='".$usname."';";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p WHERE p.username = '$usname'");
         $result=$GLOBALS['conne']->query($sql_select);
         if($result->num_rows>0){
             return true;
@@ -240,7 +250,8 @@
 
     //recuperar todos los administradores
     function select_all_admins(){
-        $sql_select_client="SELECT * FROM usuario INNER JOIN administrador ON usuario.Id_usuario=administrador.Id_admin;";
+        //$sql_select_client="SELECT * FROM usuario INNER JOIN administrador ON usuario.Id_usuario=administrador.Id_admin;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p JOIN administradir a ON a.id_persona = p.id_persona");
         $result=$GLOBALS['conne']->query($sql_select_client);
         if($result->num_rows>0){
             return $result;
@@ -251,7 +262,8 @@
 
     //recuperar un admin especifico
     function get_admin($id_admin){
-        $sql_sel="SELECT * FROM usuario NATURAL JOIN administrador NATURAL JOIN direcciones WHERE usuario.Id_usuario=".intval($id_admin).";";
+        //$sql_sel="SELECT * FROM usuario NATURAL JOIN administrador NATURAL JOIN direcciones WHERE usuario.Id_usuario=".intval($id_admin).";";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p NATURAL JOIN administrador a NATURAL JOIN direcciones d WHERE p.id_persona = ". intval($id_admin));
         $result=$GLOBALS['conne']->query($sql_sel);
         if($result->num_rows>0){
             return $result->fetch_assoc();
@@ -262,7 +274,8 @@
 
     //recuperar un cliente especific
     function get_client($id_client){
-        $sql_sel="SELECT * FROM usuario NATURAL JOIN cliente NATURAL JOIN direcciones WHERE usuario.Id_usuario=".intval($id_client).";";
+        //$sql_sel="SELECT * FROM usuario NATURAL JOIN cliente NATURAL JOIN direcciones WHERE usuario.Id_usuario=".intval($id_client).";";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p NATURAL JOIN cliente c NATURAL JOIN direcciones d WHERE p,id_persona = " . intval($id_client));
         $result=$GLOBALS['conne']->query($sql_sel);
         if($result->num_rows>0){
             return $result->fetch_assoc();
@@ -273,7 +286,8 @@
 
     //funcion para eliminar cualquier usuario, se supone que la base de datos realiza una eliminacion e actualizacion en cascada
     function delete_user($id_usuario){
-        $sql_del="DELETE FROM usuario WHERE usuario.Id_usuario=".intval($id_usuario).";";
+        //$sql_del="DELETE FROM usuario WHERE usuario.Id_usuario=".intval($id_usuario).";";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p WHERE p.id_persona = " . intval($id_usuario));
         if($GLOBALS['conne']->query($sql_del)){
             return true;
         }else{
@@ -286,7 +300,8 @@
     //***********************
     //retorna todos los productos de la base de datos
     function select_all_products(){
-        $sql_select = "SELECT * FROM producto WHERE producto.status=1;";
+        //$sql_select = "SELECT * FROM producto WHERE producto.status=1;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM producto p WHERE p.status = 1");
         $result = $GLOBALS['conne']->query($sql_select);
         if ($result->num_rows>0) {
             return $result;
@@ -297,7 +312,8 @@
     //Retorna un producto de acuerdo al ID que se recibe como parametro.
     function especific_product($id_product){
         $producto=null;
-        $sql_select="SELECT * FROM producto WHERE ID_producto = ".intval($id_product).";";
+        //$sql_select="SELECT * FROM producto WHERE ID_producto = ".intval($id_product).";";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM producto p WHERE p.cod_producto = " . intval($id_product));
         $result=$GLOBALS['conne']->query($sql_select);
         if($result->num_rows>0){
             $producto=$result->fetch_assoc();
@@ -343,7 +359,8 @@
 
     //funcion para el prodcuto mas caro
     function producto_mas(){
-        $sql_prod="SELECT * FROM producto WHERE producto.precio = MAX(producto.precio);";
+        //$sql_prod="SELECT * FROM producto WHERE producto.precio = MAX(producto.precio);";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM producto pro JOIN inventario inv ON inv.id_producto = pro.cod_producto WHERE inv.precio = MAX(inv.precio)");
         $result=$GLOBALS['conne']->query($sql_prod);
         if ($result->num_rows>0) {
             return $result->fetch_assoc();
@@ -354,7 +371,8 @@
 
     function producto_menos(){
         //funcion para el prodcuto mas barato
-        $sql_prod="SELECT * FROM producto WHERE producto.precio = MIN(producto.precio);";
+        //$sql_prod="SELECT * FROM producto WHERE producto.precio = MIN(producto.precio);";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM producto pro JOIN inventario inv ON inv.id_producto = pro.cod_producto WHERE inv.precio = MIN(inv.precio)");
         $result=$GLOBALS['conne']->query($sql_prod);
         if ($result->num_rows>0) {
             return $result->fetch_assoc();
@@ -364,7 +382,8 @@
     }    
     //funcion para seleccionar productos de acuerdo a los filtros
     function products_by_price($min, $max){
-        $sql_prod="SELECT * FROM producto WHERE producto.precio BETWEEN $min AND $max;";
+        //$sql_prod="SELECT * FROM producto WHERE producto.precio BETWEEN $min AND $max;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM producto pro JOIN inventario inv ON inv.id_producto = pro.cod_producto WHERE inv.precio BETWEEN $min AND $max");
         $result=$GLOBALS['conne']->query($sql_prod);
         if($result->num_rows>0){
             return $result;
@@ -376,7 +395,8 @@
     //obtener productos por categoria
 
     function products_by_cat($cat){
-        $sql_select="SELECT * FROM producto WHERE producto.categoria LIKE '%$cat%';";
+        //$sql_select="SELECT * FROM producto WHERE producto.categoria LIKE '%$cat%';";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM producto pro JOIN categoria_producto cat_pro ON cat_pro.id_producto = pro.cod_producto JOIN categoria cat ON cat.id_categoria = cat_pro.id_categoria WHERE cat.nombre LIKE '%$cat%'");
         $result=$GLOBALS['conne']->query($sql_select);
         if($result->num_rows>0){
             return $result;
@@ -387,7 +407,8 @@
 
     //obtener rebajas
     function get_rebajas(){
-        $sql_ofertas="SELECT * FROM ofertas WHERE fec_inicio <= NOW() AND fec_fin >= NOW();";
+        //$sql_ofertas="SELECT * FROM ofertas WHERE fec_inicio <= NOW() AND fec_fin >= NOW();";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM ofertas ofe WHERE ofe.fecha_inicio <= TO_DATE(sysdate('dd/mm/yyy')) AND ofe.fecha_fin >= TO_DATE(sysdate('dd/mm/yyy'))");
         $result=$GLOBALS['conne']->query($sql_ofertas);
         if($result->num_rows>0){
             $rebajas=array();
@@ -415,8 +436,8 @@
 
     //funcion para retornar el stock dependiendo de la talla que reciba
     function product_stock($id_prod, $talla){
-
-        $sql_prod_stock="SELECT JSON_EXTRACT(tallas,'$.$talla') as STOCK FROM producto WHERE producto.ID_producto = ".intval($id_prod)." ;";
+        //$sql_prod_stock="SELECT JSON_EXTRACT(tallas,'$.$talla') as STOCK FROM producto WHERE producto.ID_producto = ".intval($id_prod)." ;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT inv.stock FROM inventario inv WHERE inv.id_producto = '$id_prod' AND inv.talla = '$talla'");
         $result=$GLOBALS['conne']->query($sql_prod_stock);
         if($result){
             return $result->fetch_assoc();
@@ -428,7 +449,8 @@
     //obtener los productos relacionados con los gustos del cliente
     function prods_relacionados($id_cliente){
         //Aqui recuperamos el cliente
-        $sql_cat="SELECT cliente.genero FROM cliente WHERE Id_cliente=".intval($id_cliente).";";
+        //$sql_cat="SELECT cliente.genero FROM cliente WHERE Id_cliente=".intval($id_cliente).";";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT cli.sexo FROM cliente cli WHERE cli.cod_cliente = " . intval($id_cliente));
         $res=$GLOBALS['conne']->query($sql_cat);
         $cat=$res->fetch_assoc();
         $oc=$cat['genero'];
@@ -500,7 +522,8 @@
 
     //retornar los productos comprados detalle de compra
     function sale_details($id_compra){
-        $sql_sel="SELECT * FROM detalle_compra INNER JOIN producto ON detalle_compra.Id_producto=producto.ID_producto WHERE Id_compra = ".intval($id_compra)." GROUP BY detalle_compra.Id_producto;";
+        //$sql_sel="SELECT * FROM detalle_compra INNER JOIN producto ON detalle_compra.Id_producto=producto.ID_producto WHERE Id_compra = ".intval($id_compra)." GROUP BY detalle_compra.Id_producto;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM detalle_compra dco JOIN producto pro ON pro.cod_producto = dco.id_producto WHERE dco.id_producto = " . intval($id_compra) . "GROUP BY dco.id_producto");
         $result=$GLOBALS['conne']->query($sql_sel);
         if($result->num_rows>0){
             return $result;
@@ -511,7 +534,8 @@
     }
 
     function get_sale($id_compra){
-        $sql_sel="SELECT * FROM compra WHERE Id_compra=".intval($id_compra).";";
+        //$sql_sel="SELECT * FROM compra WHERE Id_compra=".intval($id_compra).";";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM compra com WHERE com.id_compra = " . intval($id_compra));
         $result=$GLOBALS['conne']->query($sql_sel);
         if($result->num_rows>0){
             return $result->fetch_assoc();
@@ -521,7 +545,8 @@
     }
 
     function obtain_pass($id_user){
-        $sql_obta="SELECT passw FROM usuario WHERE Id_usuario=".intval($id_user).";";
+        //$sql_obta="SELECT passw FROM usuario WHERE Id_usuario=".intval($id_user).";";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT per.pass FROM persona per WHERE per.id_usuario = " . intval($id_user));
         $result=$GLOBALS['conne']->query($sql_obta);
         if($result->num_rows>0){
             return $result->fetch_assoc();
@@ -589,7 +614,8 @@
     }
     //seleccionar todos los comantarios, por producto
     function select_coments_by_product($id_producto){
-        $sql_select="SELECT * FROM comentarios WHERE  Id_producto=".intval($id_producto)." ORDER BY fecha DESC ;";
+        //$sql_select="SELECT * FROM comentarios WHERE Id_producto=".intval($id_producto)." ORDER BY fecha DESC ;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM comentario com WHERE com.id_producto = " . intval($id_producto) . "ORDER BY com.fecha DESC");
         $result=$GLOBALS['conne']->query($sql_select);
         if($result->num_rows>0){
             return $result;
@@ -599,7 +625,8 @@
     }
     //Seleccionar comentarios por cliente
     function select_coments_by_client($id_cliente){
-        $sql_select="SELECT * FROM comentarios WHERE  comentarios.Id_cliente = ".intval($id_cliente)." ORDER BY fecha DESC ;";
+        //$sql_select="SELECT * FROM comentarios WHERE  comentarios.Id_cliente = ".intval($id_cliente)." ORDER BY fecha DESC ;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM comentario com WHERE com.cod_cliente = " . intval($id_cliente) . "ORDER BY com.fecha DESC");
         $result=$GLOBALS['conne']->query($sql_select);
         if($result->num_rows>0){
             return $result;
@@ -644,7 +671,8 @@
     //***********************
 
     function select_all_products_without(){
-        $sql_sel="SELECT * FROM producto LEFT JOIN ofertas ON producto.ID_producto=ofertas.Id_producto WHERE ofertas.Id_producto IS NULL;";
+        //$sql_sel="SELECT * FROM producto LEFT JOIN ofertas ON producto.ID_producto=ofertas.Id_producto WHERE ofertas.Id_producto IS NULL;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM producto pro LEFT JOIN ofertas ofe ON ofe.id_producto = pro.cod_producto WHERE ofe.id_producto IS NULL");
         $result=$GLOBALS['conne']->query($sql_sel);
         if($result->num_rows>0){
             return $result;
@@ -665,7 +693,8 @@
     }
     //retorna todos los posibles chats que hay
     function chats_disponibles(){
-        $sql_disp="SELECT usuario.* FROM usuario NATURAL JOIN chat_mensaje GROUP BY chat_mensaje.Id_usuario;";
+        //$sql_disp="SELECT usuario.* FROM usuario NATURAL JOIN chat_mensaje GROUP BY chat_mensaje.Id_usuario;";
+        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona per NATURAL JOIN mensaje men GROUP BY men.id_persona");
         $res=$GLOBALS['conne']->query($sql_disp);
         if($res->num_rows>0){
             return $res;
