@@ -292,9 +292,8 @@
 
     //funcion para eliminar cualquier usuario, se supone que la base de datos realiza una eliminacion e actualizacion en cascada
     function delete_user($id_usuario){
-        //$sql_del="DELETE FROM usuario WHERE usuario.Id_usuario=".intval($id_usuario).";";
-        $stid = oci_parse($GLOBALS['conne'],"SELECT * FROM persona p WHERE p.id_persona = " . intval($id_usuario));
-        if($GLOBALS['conne']->query($sql_del)){
+        $sql_del=oci_parse($GLOBALS['conne'],"DELETE FROM PERSONA WHERE id_persona=".intval($id_usuario).";");
+        if(oci_execute($sql_del)){
             return true;
         }else{
             return false;
@@ -348,12 +347,21 @@
     //Actualizar producto
     function update_producto($prod_data){
         //se actualiza todo excepto la fecha de lanzamiento
-        $sql_updt="UPDATE producto SET ".
-        "nombre ='".$prod_data['nombre']."',".
-        "detalles='".$prod_data['detalles']."',precio=".doubleval($prod_data['precio']).",marca='".$prod_data['marca']."'".
-        ",tipo='".$prod_data['tipo']."',tallas='".$prod_data['tallas']."',categoria='".$prod_data['categoria']."'".
-        ",imgs='".$prod_data['imgs']."',status=".intval($prod_data['status'])." WHERE ID_producto=".intval($prod_data['id']).";";
-        if($GLOBALS['conne']->query($sql_updt)){
+        $sql_updt=oci_parse($GLOBALS['conne'],"UPDATE PRODUCTO AS p INNER JOIN DETALLE_PRODUCTO AS dp ON p.id_detalle=dp.id_detalle".
+        " INNER JOIN IMAGEN_PRODUCTO AS ip ON p.cod_producto=ip.id_producto INNER JOIN IMAGEN AS i ON i.id_imagen=ip.id_imagen SET p.nombre= '".
+        $prod_data['nombre']."',p.status='".$prod_data['status']."',dp.descripcion= '".$prod_data['descp']."',dp.fecha_lanzamiento='".
+        $prod_data['fecl']."',dp.id_marca='".$prod_data['marca']."',i.titulo='".$prod_data['titulo']."',i.ruta='".$prod_data['path'].
+        "',i.fecha_creacion='".$prod_data['fecc']."',i.descripcion='".$prod_data['desci']."', WHERE p.cod_producto=".intval($prod_data['id']).";");
+        $i = 0;
+        foreach($prod_data['tallas'] as $tallarin){
+            $sql_updt += oci_parse($GLOBALS['conne'],"UPDATE INVENTARIO SET stock=".intval($prod_data['newstock'][$i]).",".
+            "precio=".intval($prod_data['precio'])." WHERE id_producto=".intval($prod_data['id'])." AND talla='".$tallarin."';");
+            $i++;
+        }
+
+        $result = oci_execute($sql_updt);
+
+        if($result){
             return true;
         }else{
             return false;
@@ -493,9 +501,9 @@
     //actualizar stock
     function actualiza_stock($id_prod, $talla, $cantidad){
         $stock=product_stock($id_prod, $talla);
-        $st=intval($stock['STOCK'])-intval($cantidad);
-        $sql_updt="UPDATE producto SET tallas=JSON_REPLACE(tallas,'$.$talla',$st) WHERE ID_producto=".intval($id_prod).";";
-        $res=$GLOBALS['conne']->query($sql_updt);
+        $st=intval($stock)-intval($cantidad);
+        $sql_updt=oci_parse("UPDATE INVENTARIO SET stock=stock-".$st." WHERE id_producto=".$id_prod." AND talla='".$talla."';");
+        $res = oci_execute($sql_updt);
         if($res){
             return true;
         }else{
@@ -506,8 +514,8 @@
 
     //eliminar un producto.
     function delete_product($id_prod){
-        $sql_del="DELETE FROM producto WHERE producto.ID_producto=".intval($id_prod).";";
-        if($GLOBALS['conne']->query($sql_del)){
+        $sql_del=oci_parse($GLOBALS['conne'],"DELETE FROM PRODUCTO WHERE cod_producto=".intval($id_prod).";");
+        if(oci_execute($sql_del)){
             return true;
         }else{
             return false;
@@ -565,14 +573,15 @@
     function modify_cliente($a_data){
         //UPDATE usuario AS u INNER JOIN cliente AS c ON u.Id_usuario=c.Id_cliente INNER JOIN direcciones AS d ON u.Id_usuario=d.Id_usuario SET d.estado='Aguas', c.gustos='caca', u.telefono='000000000'
         
-        $sql_update="UPDATE usuario AS u INNER JOIN cliente AS c ON u.Id_usuario=c.Id_cliente INNER JOIN direcciones AS d ON u.Id_usuario=d.Id_usuario SET u.username=".
-        "'".$a_data['username']."', u.passw='".$a_data['password']."', u.email='".$a_data['email']."',".
-        "u.p_nombre='".$a_data['nom_1']."',u.s_nombre='".$a_data['nom_2']."',u.ape_pat='".$a_data['ape_1']."',u.ape_mat='".$a_data['ape_2']."',".
-        "u.fec_nac='".$a_data['fec_nac']."',u.telefono='".$a_data['tel']."',d.ciudad='".$a_data['ciudad']."',d.colonia='".$a_data['colonia']."',".
+        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA AS p INNER JOIN CLIENTE AS c ON p.id_persona=c.id_persona INNER JOIN DIRECCION AS d ON p.id_direccion=d.id_direccion SET p.username=".
+        "'".$a_data['username']."', p.pass='".$a_data['password']."', p.email='".$a_data['email']."',".
+        "p.p_nombre='".$a_data['nom_1']."',p.s_nombre='".$a_data['nom_2']."',p.ape_pat='".$a_data['ape_1']."',p.ape_mat='".$a_data['ape_2']."',".
+        "p.fec_nac='".$a_data['fec_nac']."',p.telefono='".$a_data['tel']."',d.pais='".$a_data['pais']."',d.ciudad='".$a_data['ciudad']."',d.colonia='".$a_data['colonia']."',".
         "d.estado='".$a_data['estado']."',d.calle='".$a_data['calle']."',d.numero='".$a_data['num_ext']."',d.num_interior='".$a_data['num_int']."',d.cod_postal='".$a_data['codigo']."', ".
-        "c.gustos='".$a_data['gustos']."', c.genero='".$a_data['genero']."' WHERE u.Id_usuario=".intval($a_data['id'])." ;";
-        if($GLOBALS['conne']->query($sql_update)){
-            echo "si jalo".$GLOBALS['conne']->query($sql_update);
+        "c.gustos='".$a_data['gustos']."', c.sexo='".$a_data['sexo']."' WHERE p.id_persona=".intval($a_data['id'])." ;");
+        
+        if(oci_execute($sql_update)){
+            echo "si jalo";
             return true;
         }else{
             echo "no  jalo";
@@ -582,13 +591,13 @@
     }
 
     function modify_admin($a_data){
-        $sql_update="UPDATE usuario AS u INNER JOIN administrador AS a ON u.Id_usuario=a.Id_admin INNER JOIN direcciones AS d ON u.Id_usuario=d.Id_usuario SET u.username=".
-        "'".$a_data['username']."', u.email='".$a_data['email']."',".
+        $sql_update=oci_parse($GLOBALS['conne'],"UPDATE PERSONA AS u INNER JOIN ADMINISTRADOR AS a ON u.id_persona=a.id_persona INNER JOIN DIRECCION AS d ON u.id_direccion=d.id_direccion SET u.username=".
+        "'".$a_data['username']."', u.pass='".$a_data['password']."', u.email='".$a_data['email']."',".
         "u.p_nombre='".$a_data['nom_1']."',u.s_nombre='".$a_data['nom_2']."',u.ape_pat='".$a_data['ape_1']."',u.ape_mat='".$a_data['ape_2']."',".
-        "u.fec_nac='".$a_data['fec_nac']."',u.telefono='".$a_data['tel']."',d.ciudad='".$a_data['ciudad']."',d.colonia='".$a_data['colonia']."',".
+        "u.fec_nac='".$a_data['fec_nac']."',u.telefono='".$a_data['tel']."',d.pais='".$a_data['pais']."',d.ciudad='".$a_data['ciudad']."',d.colonia='".$a_data['colonia']."',".
         "d.estado='".$a_data['estado']."',d.calle='".$a_data['calle']."',d.numero='".$a_data['num_ext'].",d.num_interior='".$a_data['num_int']."',d.cod_postal='".$a_data['codigo']."' ".
-        " WHERE u.Id_usuario=".intval($a_data['id'])." ;";
-        if($GLOBALS['conne']->query($sql_update)){
+        " WHERE u.id_persona=".intval($a_data['id'])." ;");
+        if(oci_execute($sql_update)){
             return true;
         }else{
             return false;
@@ -640,18 +649,17 @@
         }
     }
     //eliminar un comentario
-    function delete_coment($data_coment){
+    function delete_coment($id_comentario){
         //este array de $data_coment debe de tener la estructura
         /*
             Id_cliente => 
             Id_producto =>
             fecha =>
         */ 
-        $sql_del="DELETE FROM comentarios WHERE ".
-        "fecha='".$data_coment['fecha']."' AND Id_cliente=".intval($data_coment['Id_cliente'])." AND Id_producto=".intval($data_coment['Id_producto']).";";
+        $sql_del=oci_parse($GLOBALS['conne'],"DELETE FROM COMENTARIO WHERE id_comentario=".intval($id_comentario).";");
         //DELETE FROM `comentarios` WHERE fecha="2020-12-15 22:48:07" AND Id_cliente=15 AND Id_producto=4
-        $result=$GLOBALS['conne']->query($sql_del);
-        if($result->num_rows>0){
+        $result=oci_execute($sql_del);
+        if($result){
             return true;
         }else{
             return false;
@@ -671,6 +679,17 @@
             return false;
         }
     }
+
+    function del_offer($id_us){
+        $sql_del=oci_parse($GLOBALS['conne'],"DELETE FROM MENSAJE WHERE id_oferta=".intval($id_oferta).";");
+        if(oci_execute($sql_del)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
      //***********************
     //Funciones para los productos
     //***********************
@@ -711,8 +730,8 @@
 
     //elimina el chat por completo
     function del_chat($id_us){
-        $sql_del="DELETE FROM chat_mensaje WHERE Id_usuario=".intval($id_us).";";
-        if($GLOBALS['conne']->query($sql_del)){
+        $sql_del=oci_parse($GLOBALS['conne'],"DELETE FROM MENSAJE WHERE id_persona=".intval($id_us).";");
+        if(oci_execute($sql_del)){
             return true;
         }else{
             return false;

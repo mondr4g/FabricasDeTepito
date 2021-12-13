@@ -412,26 +412,26 @@
                         <div class="input2">
                             <div class="input-group">
                                 <label> Talla XS </label>
-                                <input type="text" name="XS" autocomplete="off" value="<?php echo $tallas->XS?>" required>
+                                <input type="text" name="stockXS" autocomplete="off" value="<?php echo $tallas->XS?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Talla S </label>
-                                <input type="text" name="S" autocomplete="off" value="<?php echo $tallas->S?>" required>
+                                <input type="text" name="stockS" autocomplete="off" value="<?php echo $tallas->S?>" required>
                             </div>    
                         </div>
                         <div class="input2">
                             <div class="input-group">
                                 <label> Talla M </label>
-                                <input type="text" name="M" autocomplete="off" value="<?php echo $tallas->M?>" required>
+                                <input type="text" name="stockM" autocomplete="off" value="<?php echo $tallas->M?>" required>
                             </div>
                             <div class="input-group">
                                 <label> Talla L </label>
-                                <input type="text" name="L" autocomplete="off" value="<?php echo $tallas->L?>" required>
+                                <input type="text" name="stockL" autocomplete="off" value="<?php echo $tallas->L?>" required>
                             </div>    
                         </div>
                         <div class="input-group">
                             <label> Talla XL </label>
-                            <input type="text" name="XL" value="<?php echo $tallas->XL?>" required>
+                            <input type="text" name="stockXL" value="<?php echo $tallas->XL?>" required>
                         </div>
                             <div class="input-group">
                                 <label> URL IMG-1 </label>
